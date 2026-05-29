@@ -1,0 +1,209 @@
+---
+title: Sonner (Toast)
+description: A themed toast notification system powered by react-native-sonner. Supports success, error, warning, and info variants with icon bubbles, actions, and stacking.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { ExternalLinks } from "@//components/external-links";
+
+<ExternalLinks
+  links={[
+    { title: 'React Native Sonner Docs', url: 'https://github.com/idrissgarfa/react-native-sonner' },
+  ]}
+/>
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { Toaster, toast } from '@/components/ui/sonner';
+    import Button from '@/components/ui/button';
+
+    // 1. Place <Toaster /> once at the root of your app
+    // 2. Call toast() anywhere
+
+    export function SonnerDemo() {
+      return (
+        <>
+          <Toaster />
+          <Button
+            title="Show Toast"
+            onPress={() => toast.success('Profile updated!', {
+              description: 'Your changes have been saved.',
+            })}
+          />
+        </>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "sonner"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-sonner @expo/vector-icons
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/sonner.tsx`:**
+        <ComponentSource name="sonner" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Setup
+
+Place `<Toaster />` once at the root of your app, outside of any navigation stacks:
+
+```tsx title="app/_layout.tsx"
+import { Toaster } from '@/components/ui/sonner';
+
+export default function RootLayout() {
+  return (
+    <>
+      <Stack />
+      <Toaster />
+    </>
+  );
+}
+```
+
+## Usage
+
+```tsx
+import { toast } from '@/components/ui/sonner';
+```
+
+```tsx
+toast('Default message');
+toast.success('Success!');
+toast.error('Something went wrong.');
+toast.warning('Proceed with caution.');
+toast.info('Just so you know…');
+```
+
+## Examples
+
+### With description
+
+```tsx
+toast.success('File uploaded', {
+  description: 'report-q3.pdf was uploaded successfully.',
+});
+```
+
+### With action button
+
+```tsx
+toast.error('Failed to save', {
+  description: 'Check your connection and try again.',
+  action: {
+    label: 'Retry',
+    onClick: () => saveData(),
+  },
+});
+```
+
+### With cancel button
+
+```tsx
+toast('Deleting item…', {
+  cancel: {
+    label: 'Undo',
+    onClick: () => undoDelete(),
+  },
+});
+```
+
+### Single toast (no stacking)
+
+Pass `stack={false}` to only ever show one toast at a time:
+
+```tsx
+<Toaster stack={false} />
+```
+
+### Custom duration
+
+```tsx
+toast.info('Auto-dismisses in 8 seconds', { duration: 8000 });
+toast.success('Stays until closed', { duration: Infinity });
+```
+
+### Programmatic dismiss
+
+```tsx
+const id = toast.loading('Saving…');
+await saveData();
+toast.dismiss(id);
+toast.success('Saved!');
+```
+
+## API Reference
+
+### Toaster
+
+Place this once in your app root.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `stack` | `boolean` | `true` | When `true`, up to `visibleToasts` toasts stack. When `false`, only one toast shows at a time. |
+| `visibleToasts` | `number` | `3` | Maximum number of toasts visible simultaneously (when `stack` is `true`). |
+
+Extends all [`react-native-sonner` Toaster props](https://github.com/mgcrea/react-native-sonner).
+
+### toast
+
+The imperative API for triggering toasts from anywhere in your app.
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `toast()` | `(message, options?) => id` | Default (neutral) toast. |
+| `toast.success()` | `(message, options?) => id` | Green success toast with check icon. |
+| `toast.error()` | `(message, options?) => id` | Red error toast with x icon. |
+| `toast.warning()` | `(message, options?) => id` | Yellow warning toast with alert icon. |
+| `toast.info()` | `(message, options?) => id` | Blue info toast with info icon. |
+| `toast.loading()` | `(message, options?) => id` | Loading toast. |
+| `toast.dismiss()` | `(id?) => void` | Dismiss a specific toast by ID, or all toasts. |
+
+#### Toast Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `description` | `string` | Secondary text below the title. |
+| `duration` | `number` | Auto-dismiss time in ms. Default: `4000`. Pass `Infinity` to disable. |
+| `action` | `{ label: string; onClick: () => void }` | Primary action button. |
+| `cancel` | `{ label: string; onClick: () => void }` | Cancel/undo button. |
+| `id` | `string \| number` | Custom ID for the toast (useful for updating or dismissing it). |

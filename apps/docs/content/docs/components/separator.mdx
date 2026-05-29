@@ -1,0 +1,135 @@
+---
+title: Separator
+description: A horizontal or vertical divider line with optional center label. Automatically decorative (hidden from accessibility tree) when no label is provided.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+   import Separator from '@/components/ui/separator';
+import { Text } from 'react-native';
+export default function SeparatorDemo() {
+  return (
+    <>
+    <Text style={{ fontWeight: '600' }}>
+      lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur varius. Sed at ligula a enim efficitur commodo. Nulla facilisi. Donec ac odio a nisl convallis tincidunt. In hac habitasse platea dictumst. Curabitur ut ligula sed nunc fermentum bibendum.
+    </Text>
+    <Separator />
+    <Text>
+      lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur varius. Sed at ligula a enim efficitur commodo. Nulla facilisi. Donec ac odio a nisl convallis tincidunt. In hac habitasse platea dictumst. Curabitur ut ligula sed nunc fermentum bibendum.
+    </Text>
+    </>
+  )
+}
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "separator"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/separator.tsx`:**
+        <ComponentSource name="separator" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Separator from '@/components/ui/separator';
+```
+
+```tsx
+<Separator />
+```
+
+## Examples
+
+### Horizontal (default)
+
+```tsx
+<View>
+  <Text>Section A</Text>
+  <Separator />
+  <Text>Section B</Text>
+</View>
+```
+
+### With a label
+
+When a `label` is provided, it is centered between two lines and announced to screen readers as a separator landmark.
+
+```tsx
+<Separator label="OR" />
+```
+
+### Vertical
+
+```tsx
+<View style={{ flexDirection: 'row', height: 40, alignItems: 'center' }}>
+  <Text>Left</Text>
+  <Separator orientation="vertical" />
+  <Text>Right</Text>
+</View>
+```
+
+### Custom thickness and spacing
+
+```tsx
+<Separator thickness={2} spacing={24} />
+```
+
+### Section divider with label
+
+```tsx
+<Separator label="Continue with" spacing={20} />
+```
+
+## API Reference
+
+### Separator
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the separator line. |
+| `label` | `string` | — | Text centered between the lines. Only available for horizontal orientation. When omitted the separator is fully decorative and hidden from the accessibility tree. |
+| `thickness` | `number` | `1` | Pixel thickness of the line. |
+| `spacing` | `number` | `16` | Vertical margin (horizontal) or horizontal margin (vertical) around the separator. Also controls the horizontal padding of the label. |
+| `style` | `ViewStyle` | — | Additional container styles. |

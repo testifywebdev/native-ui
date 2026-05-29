@@ -1,0 +1,45 @@
+---
+title: Introduction
+description: Beautiful, native-feeling Expo components that you actually own. Zero lock-in, fully customizable, and ready to drop into your project.
+---
+
+Most component libraries solve the wrong problem. They hand you a polished black box, and the moment you need to change something real—a pressed state, an animation curve, or an Android-specific spacing quirk—you are stuck reading source code you can't touch, trying to hack it with style overrides.
+
+**native-ui is different.**
+
+Run a command, get the source. The component lands in your project as plain, readable TypeScript. From that point on, it is yours. Read it, tweak it, or delete half of it. The CLI has no opinion about what you do next.
+
+---
+
+## The shadcn/ui experience, on mobile
+
+If you've used shadcn/ui on the web, your muscle memory will work here. Run a command, copy a component, move on. The design tokens match. The light/dark split works the exact same way. The philosophy of code ownership is identical.
+
+But **native-ui** isn't just a web port. It is engineered specifically for the real, unforgiving constraints of React Native: no stylesheet inheritance, no browser APIs, and no DOM. Every component is built from the ground up to feel truly native.
+
+---
+
+## Built for developers who ship
+
+You already know what you want your app to feel like. native-ui gets out of your way and gives you the building blocks to actually build it.
+
+###  Zero-config Dark Mode
+Dark mode shouldn't require an archeological dig through context providers. Every component responds to the system theme automatically. No prop drilling, no flashing—it just works on the first render.
+
+### Animations that feel native
+Transitions run on the UI thread, not the JS thread. Accordions snap open seamlessly. Dialogs fade cleanly. Menus don't stutter on a cheap Android device. This isn't bolted on; it is fundamentally how the components were written using Reanimated.
+
+###  Accessible by default
+Tap targets, screen reader labels, and keyboard behaviors are baked in. The components handle the accessibility heavy lifting so you don't have to audit it before launch.
+
+###  Designed to be edited
+Unlike an npm package you upgrade and pray doesn't break, these files sit directly in your repo. Your team can review them in a PR, diff them, and understand exactly what is rendering. No mystery.
+
+---
+
+## 30+ components, one command away
+
+Forms, feedback, layout, navigation—the essential building blocks you reach for on every single project, ready to drop in and customize.
+
+```bash
+npx native-ui add button card input select

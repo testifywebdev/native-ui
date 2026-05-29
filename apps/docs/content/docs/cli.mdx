@@ -1,0 +1,203 @@
+---
+title: CLI
+description: Reference for every native-ui command.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+The `native-ui` CLI handles the full lifecycle of your components: initialising a project, adding and removing components, inspecting what's installed, and diffing local files against the registry.
+
+All commands require a `native-ui.json` at the project root, except `init` which creates it.
+
+---
+
+## init
+
+Sets up native-ui in your project. Writes `native-ui.json`, installs base dependencies, and scaffolds the shared `lib/theme.ts` and `lib/use-styles.ts` files.
+
+```bash
+native-ui init
+```
+
+**Options**
+
+| Flag | Description |
+|---|---|
+| `-y, --yes` | Skip all prompts and use defaults |
+| `-f, --force` | Overwrite an existing `native-ui.json` |
+
+**What it does**
+
+Running `init` without flags opens an interactive prompt:
+
+```
+✔ Are you using TypeScript? › yes
+✔ Where should components be installed? › components/ui
+✔ Which command runs Expo? › npx expo (npm)
+✔ Install base dependencies? › yes
+```
+
+After confirming, it:
+
+1. Writes `native-ui.json` with your choices
+2. Runs `npx expo install react-native-reanimated react-native-worklets` (or equivalent for your runner)
+3. Fetches and writes `lib/theme.ts` and `lib/use-styles.ts` from the registry
+
+Re-running `init` on an existing project preserves the `components` list in `native-ui.json`. Your already-installed components are never removed.
+
+<Callout type="info">
+The runner (`npx`, `pnpm`, `yarn`, `bunx`) is auto-detected from your lockfile. You can override it during the prompt or by editing `native-ui.json` directly.
+</Callout>
+
+---
+
+## add
+
+Fetches one or more components from the registry and writes them into your output directory.
+
+```bash
+native-ui add [components...]
+```
+
+**Examples**
+
+```bash
+# Add a single component
+native-ui add button
+
+# Add several at once
+native-ui add button input card
+
+# Interactive picker — choose from the full list
+native-ui add
+
+# Add everything
+native-ui add --all
+```
+
+**Options**
+
+| Flag | Description |
+|---|---|
+| `-o, --overwrite` | Overwrite existing files without prompting |
+| `-a, --all` | Add every available component |
+
+**What it does**
+
+1. Resolves the component's transitive registry dependencies (e.g. `field` depends on `label` — both are installed)
+2. Fetches file contents from the GraphQL registry
+3. Writes each file to the path specified in the registry manifest (relative to your project root)
+4. Installs any missing npm peer dependencies via `expo install`
+5. Records each installed key in `native-ui.json → components[]`
+
+If a component is already listed in `native-ui.json`, you'll be asked to confirm before overwriting. Pass `--overwrite` to skip the prompt.
+
+**Available components**
+
+```
+accordion      alert          alert-dialog   aspect-ratio
+avatar         badge          button         button-group
+calendar       card           carousel       checkbox
+date-picker    dialog         empty          field
+input          input-otp      label          progress
+radio-group    select         separator      skeleton
+sonner         spinner        switch         table
+textarea       typography
+```
+
+Run `native-ui list` to see what's installed in your current project.
+
+---
+
+## remove
+
+Deletes local component files and removes them from `native-ui.json`.
+
+```bash
+native-ui remove [components...]
+# alias: native-ui rm
+```
+
+**Examples**
+
+```bash
+# Remove a specific component
+native-ui remove skeleton
+
+# Interactive picker — choose from installed components
+native-ui remove
+```
+
+You'll be asked to confirm before any file is deleted. npm dependencies are never uninstalled automatically — remove them manually if you no longer need them.
+
+---
+
+## list
+
+Shows all available components and marks which ones are installed in your project.
+
+```bash
+native-ui list
+# alias: native-ui ls
+```
+
+**Options**
+
+| Flag | Description |
+|---|---|
+| `-c, --category <name>` | Filter by category prefix |
+
+**Example output**
+
+```
+  native-ui   available components
+
+  total 30   installed 4   available 26
+
+  ✔  accordion
+  ○  alert
+  ✔  alert-dialog
+  ○  aspect-ratio
+  ...
+```
+
+No network request is made — the list is resolved from the static registry in the CLI itself.
+
+---
+
+## diff
+
+Compares your local component files against the current registry versions and highlights what's changed.
+
+```bash
+native-ui diff [component]
+```
+
+**Examples**
+
+```bash
+# Diff all installed components
+native-ui diff
+
+# Diff a single component
+native-ui diff accordion
+```
+
+**What it does**
+
+1. Reads the component list from `native-ui.json`
+2. Fetches the current file content from the registry
+3. Compares line-by-line against your local file
+4. Prints a coloured unified diff for any component that has diverged
+
+After showing the diff, you're offered a choice:
+
+```
+✔ What would you like to do? › Update all 2 component(s)
+```
+
+Choosing to update runs `native-ui add --overwrite` for the changed components. Choosing to skip leaves your files untouched.
+
+<Callout type="warn">
+`diff` only checks components listed in `native-ui.json`. If you've moved or renamed a file outside the CLI, it will show up as missing rather than changed.
+</Callout>

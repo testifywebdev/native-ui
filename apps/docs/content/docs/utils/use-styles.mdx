@@ -1,0 +1,117 @@
+---
+title: useStyles
+description: A hook for creating theme-aware StyleSheet objects that update automatically when the theme changes.
+---
+
+`useStyles` is a small hook that wraps React Native's `StyleSheet.create` with theme awareness. Pass it a function that receives the current theme and returns your styles — it handles the rest.
+
+---
+
+## Usage
+
+```ts
+import useStyles from '@/lib/use-styles';
+```
+
+```tsx
+const styles = useStyles((theme) => ({
+  container: {
+    backgroundColor: THEME[theme].colors.background,
+    padding: THEME[theme].spacing.lg,
+  },
+  title: {
+    color: THEME[theme].colors.foreground,
+    fontSize: THEME[theme].typography.lg,
+    fontWeight: '600',
+  },
+}));
+```
+
+The returned `styles` object is a fully typed `StyleSheet` — use it exactly as you would the output of `StyleSheet.create`.
+
+---
+
+## Examples
+
+### Basic component
+
+```tsx
+import { View, Text } from 'react-native';
+import useStyles from '@/lib/use-styles';
+import { THEME } from '@/lib/theme';
+
+export function Card({ children }: { children: React.ReactNode }) {
+  const styles = useStyles((theme) => ({
+    card: {
+      backgroundColor: THEME[theme].colors.card,
+      borderColor: THEME[theme].colors.border,
+      borderWidth: 1,
+      borderRadius: THEME[theme].radius.lg,
+      padding: THEME[theme].spacing.lg,
+    },
+    label: {
+      color: THEME[theme].colors.cardForeground,
+      fontSize: THEME[theme].typography.sm,
+    },
+  }));
+
+  return (
+    <View style={styles.card}>
+      <Text style={styles.label}>{children}</Text>
+    </View>
+  );
+}
+```
+
+### Combining with inline styles
+
+`useStyles` works alongside inline styles. Use it for static per-theme values and inline styles for values that change per-render (e.g. based on props or state).
+
+```tsx
+export function Badge({ color, label }: { color: string; label: string }) {
+  const styles = useStyles((theme) => ({
+    badge: {
+      borderRadius: THEME[theme].radius.full,
+      paddingHorizontal: THEME[theme].spacing.sm,
+      paddingVertical: THEME[theme].spacing.xs,
+    },
+    text: {
+      color: THEME[theme].colors.primaryForeground,
+      fontSize: THEME[theme].typography.xs,
+      fontWeight: '600',
+    },
+  }));
+
+  return (
+    <View style={[styles.badge, { backgroundColor: color }]}>
+      <Text style={styles.text}>{label}</Text>
+    </View>
+  );
+}
+```
+
+---
+
+## API
+
+```ts
+function useStyles<T extends NamedStyles>(
+  stylesheet: (theme: Theme) => T
+): T
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `stylesheet` | `(theme: Theme) => T` | A function that receives `'light'`, `'dark'`, or `'unspecified'` and returns a styles object. |
+
+**Returns** the result of `StyleSheet.create(stylesheet(theme))`, memoised by theme. The stylesheet function only re-runs when the active theme changes.
+
+---
+
+## Notes
+
+**Memoisation.** The stylesheet function runs once per theme value, not on every render. Styles are cached by `useMemo` and only recomputed when the theme changes.
+
+**Type inference.** The generic `<T>` is inferred from the return type of your stylesheet function, so `styles.container`, `styles.title`, and so on are all fully typed with no extra annotation needed.
+
+**Server rendering.** `useTheme` reads from context and defaults to `'light'` when no provider is found, so this hook is safe to call in any component tree as long as `ThemeProvider` is somewhere above it.

@@ -1,0 +1,248 @@
+---
+title: Select
+description: A dropdown picker built on rn-primitives with animated content, grouped options, separators, and a trigger that automatically matches its width to the content.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { ExternalLinks } from "@/components/external-links";
+import { PortalInfoAlert } from "@/components/portal-info-alert";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/select/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/select/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      Select,
+      SelectTrigger,
+      SelectValue,
+      SelectContent,
+      SelectItem,
+    } from '@/components/ui/select';
+
+    export function SelectDemo() {
+      return (
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a fruit…" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="apple" label="Apple" />
+            <SelectItem value="banana" label="Banana" />
+            <SelectItem value="mango" label="Mango" />
+            <SelectItem value="orange" label="Orange" />
+          </SelectContent>
+        </Select>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "select"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @rn-primitives/select @expo/vector-icons react-native-reanimated react-native-screens
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/select.tsx`:**
+        <ComponentSource name="select" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+<PortalInfoAlert />
+
+## Usage
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  type Option,
+} from '@/components/ui/select';
+```
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Choose an option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="one" label="Option One" />
+    <SelectItem value="two" label="Option Two" />
+  </SelectContent>
+</Select>
+```
+
+## Examples
+
+### Controlled
+
+```tsx
+import { type Option } from '@/components/ui/select';
+
+const [value, setValue] = useState<Option>();
+
+<Select value={value} onValueChange={setValue}>
+  <SelectTrigger>
+    <SelectValue placeholder="Pick one" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="light" label="Light" />
+    <SelectItem value="dark" label="Dark" />
+    <SelectItem value="system" label="System" />
+  </SelectContent>
+</Select>
+```
+
+### Grouped options with labels
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select timezone" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>North America</SelectLabel>
+      <SelectItem value="est" label="Eastern Standard Time (EST)" />
+      <SelectItem value="cst" label="Central Standard Time (CST)" />
+      <SelectItem value="pst" label="Pacific Standard Time (PST)" />
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Europe</SelectLabel>
+      <SelectItem value="gmt" label="Greenwich Mean Time (GMT)" />
+      <SelectItem value="cet" label="Central European Time (CET)" />
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+### Small trigger size
+
+```tsx
+<Select>
+  <SelectTrigger size="sm">
+    <SelectValue placeholder="Filter" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="all" label="All" />
+    <SelectItem value="active" label="Active" />
+    <SelectItem value="archived" label="Archived" />
+  </SelectContent>
+</Select>
+```
+
+### Disabled items
+
+```tsx
+<SelectContent>
+  <SelectItem value="available" label="Available" />
+  <SelectItem value="sold-out" label="Sold out" disabled />
+</SelectContent>
+```
+
+## API Reference
+
+### Select
+
+Root wrapper that manages open state and trigger width context.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Option` | — | Controlled selected value. |
+| `onValueChange` | `(option: Option) => void` | — | Callback when selection changes. |
+| `defaultValue` | `Option` | — | Initial value for uncontrolled use. |
+
+### SelectTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"default" \| "sm"` | `"default"` | Height of the trigger — `44px` default, `36px` small. |
+| `disabled` | `boolean` | `false` | Disables the trigger. |
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### SelectValue
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `placeholder` | `string` | — | Text shown when no value is selected. |
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### SelectContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `position` | `"popper" \| "item-aligned"` | `"popper"` | Positioning strategy. |
+| `portalHost` | `string` | — | Custom portal host name. |
+| `style` | `ViewStyle` | — | Additional styles for the dropdown panel. |
+
+### SelectGroup
+
+A semantic grouping container. Use with `SelectLabel`.
+
+### SelectLabel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### SelectItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | **Required.** Unique value for this option. |
+| `label` | `string` | — | **Required.** Display text for this option. |
+| `disabled` | `boolean` | `false` | Grays out and prevents selection. |
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### SelectSeparator
+
+A 1px horizontal divider between groups or items. No props beyond standard `ViewProps`.

@@ -1,0 +1,209 @@
+---
+title: Customisation
+description: Adjust tokens, colours, spacing, and dark mode to match your brand.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+
+native-ui's design system lives entirely in two files: `lib/theme.ts` and `native-ui.json`. There's no CSS, no Tailwind config to sync, and no build step. Every token is plain TypeScript — readable, searchable, and easy to change.
+
+---
+
+## How the theme system works
+
+All components read from a single `THEME` object exported from `lib/theme.ts`. It contains three keys: `light`, `dark`, and `unspecified` (a fallback that mirrors `light`).
+
+```ts title="lib/theme.ts (shape)"
+export const THEME: Record<Theme, ThemeConfig> = {
+  light: {
+    colors: { background, foreground, primary, ... },
+    spacing: { xs, sm, md, lg, xl, '2xl', '3xl' },
+    radius:  { sm, md, lg, xl, full },
+    typography: { xs, sm, base, lg, xl, '2xl' },
+  },
+  dark:  { ... },
+  unspecified: { ... },
+};
+```
+
+Inside any component, tokens are accessed like this:
+
+```tsx
+const { colors, spacing, typography } = THEME[theme];
+```
+
+There's no stylesheet adapter or runtime config resolver. If you change a value in `THEME`, every component that reads that token updates automatically.
+
+---
+
+## Changing colours
+
+Open `lib/theme.ts` and update the `colors` object under `light` and/or `dark`.
+
+```ts title="lib/theme.ts"
+light: {
+  colors: {
+    primary: '#6d28d9',          // your brand purple
+    primaryForeground: '#ffffff',
+    destructive: '#dc2626',
+    // ...
+  },
+},
+dark: {
+  colors: {
+    primary: '#a78bfa',          // lighter purple for dark mode
+    primaryForeground: '#1e1b4b',
+    // ...
+  },
+},
+```
+
+The full list of colour tokens:
+
+| Token | Used for |
+|---|---|
+| `background` / `foreground` | Screen background and default text |
+| `card` / `cardForeground` | Card surface and text |
+| `primary` / `primaryForeground` | Primary actions (buttons, active states) |
+| `secondary` / `secondaryForeground` | Secondary actions and surfaces |
+| `muted` / `mutedForeground` | Placeholder text, subtle backgrounds |
+| `accent` / `accentForeground` | Hover/focus highlights |
+| `destructive` / `destructiveForeground` | Errors, delete actions |
+| `border` | Dividers, input borders |
+| `input` | Input field background |
+| `ring` | Focus rings |
+| `chart1`–`chart5` | Data visualisation palette |
+
+---
+
+## Changing spacing
+
+Spacing is used for padding, gap, and margin throughout all components. The scale is in pixels (React Native doesn't use `rem`).
+
+```ts title="lib/theme.ts"
+const spacing: ThemeSpacing = {
+  xs:   4,
+  sm:   8,
+  md:   12,
+  lg:   16,
+  xl:   20,
+  '2xl': 24,
+  '3xl': 32,
+};
+```
+
+Spacing is shared across all three themes. Change it once and every component updates.
+
+---
+
+## Changing border radius
+
+```ts title="lib/theme.ts"
+const radius: ThemeRadius = {
+  sm:   4,
+  md:   8,
+  lg:   12,
+  xl:   16,
+  full: 9999,  // pills and avatars
+};
+```
+
+To get a fully square UI, set all values to `0`. For a softer, rounded look, increase `lg` and `xl`.
+
+---
+
+## Changing typography
+
+Font sizes are in pixels. The scale is used for `fontSize` and, where needed, derived `lineHeight` values.
+
+```ts title="lib/theme.ts"
+const typography: ThemeTypography = {
+  xs:   11,
+  sm:   13,
+  base: 15,
+  lg:   17,
+  xl:   20,
+  '2xl': 24,
+};
+```
+
+To use a custom font family, set `fontFamily` directly in the component's style — or add a `fontFamily` token to `ThemeTypography` and `THEME` yourself.
+
+---
+
+## Dark mode
+
+Dark mode is driven by the `ThemeProvider` in `lib/theme.ts`. It reads `useColorScheme()` on mount and exposes the current theme via `useTheme()`.
+
+```tsx title="app/_layout.tsx"
+import { ThemeProvider } from '@/lib/theme';
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <Stack />
+    </ThemeProvider>
+  );
+}
+```
+
+The `theme` value will be `'light'`, `'dark'`, or `'unspecified'` (when the OS returns `null`).
+
+### Forcing a theme
+
+To override system preference and lock your app to a specific theme, manage the `theme` state manually:
+
+```tsx
+import { ThemeContext } from '@/lib/theme';
+
+// Inside a settings screen, for example:
+const { setTheme } = useTheme();
+
+<Button onPress={() => setTheme('dark')}>
+  Switch to dark
+</Button>
+```
+
+---
+
+## Customising a single component
+
+Because every component is a local file, you can edit it directly without worrying about upstream updates overwriting your changes (unless you run `native-ui add --overwrite`).
+
+Use `native-ui diff` to see what's changed in the registry before deciding whether to update.
+
+```bash
+native-ui diff accordion
+```
+
+---
+
+## native-ui.json
+
+This file sits at your project root and controls CLI behaviour. You can edit it directly.
+
+```json title="native-ui.json"
+{
+  "$schema": "https://native-ui.dev/schema.json",
+  "typescript": true,
+  "outputDir": "components/ui",
+  "expoRunner": "npx",
+  "baseDependencies": [
+    "react-native-reanimated",
+    "react-native-worklets"
+  ],
+  "components": ["accordion", "alert", "button"]
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `typescript` | `boolean` | Whether the project uses TypeScript |
+| `outputDir` | `string` | Relative path where component files are written |
+| `expoRunner` | `'npx' \| 'pnpm' \| 'yarn' \| 'bunx'` | Runner used for `expo install` |
+| `baseDependencies` | `string[]` | Deps installed during `init` |
+| `components` | `string[]` | Keys of components currently installed |
+
+<Callout type="info">
+The `components` array is the CLI's only state. If you add a component file manually (without the CLI), add its key here so `diff` and `remove` know about it.
+</Callout>

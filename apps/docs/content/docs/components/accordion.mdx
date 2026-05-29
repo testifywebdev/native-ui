@@ -1,0 +1,182 @@
+---
+title: Accordion
+description: A vertically stacked set of interactive headings that each reveal a section of content, with smooth animated transitions.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { ExternalLinks } from "@//components/external-links";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/accordion/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/accordion/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      Accordion,
+      AccordionItem,
+      AccordionTrigger,
+      AccordionContent,
+    } from '@/components/ui/accordion';
+
+    export function AccordionDemo() {
+      return (
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Is it accessible?</AccordionTrigger>
+            <AccordionContent>
+              Yes. It adheres to the WAI-ARIA design pattern.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Is it animated?</AccordionTrigger>
+            <AccordionContent>
+              Yes. It uses react-native-reanimated for smooth height transitions.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Is it styled?</AccordionTrigger>
+            <AccordionContent>
+              Yes. It uses your theme colors and spacing automatically.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "accordion"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @rn-primitives/accordion react-native-reanimated @expo/vector-icons
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/accordion.tsx`:**
+        <ComponentSource name="accordion" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+```
+
+```tsx
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Section Title</AccordionTrigger>
+    <AccordionContent>Section content goes here.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## Examples
+
+### Multiple open items
+
+```tsx
+<Accordion type="multiple">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>First Item</AccordionTrigger>
+    <AccordionContent>Content for first item.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Second Item</AccordionTrigger>
+    <AccordionContent>Content for second item.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+### Default open value
+
+```tsx
+<Accordion type="single" defaultValue="item-1" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Open by default</AccordionTrigger>
+    <AccordionContent>This is visible on mount.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+## API Reference
+
+### Accordion (Root)
+
+Extends `@rn-primitives/accordion` Root props.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `"single" \| "multiple"` | — | Whether one or multiple items can be open at a time. |
+| `collapsible` | `boolean` | `false` | When `type="single"`, allows closing the open item. |
+| `defaultValue` | `string \| string[]` | — | The initially open item(s). |
+| `value` | `string \| string[]` | — | Controlled open item(s). |
+| `onValueChange` | `(value) => void` | — | Callback when the open item changes. |
+| `style` | `ViewStyle` | — | Additional styles for the container. |
+
+### AccordionItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | **Required.** Unique identifier for the item. |
+| `disabled` | `boolean` | `false` | Prevents the item from being toggled. |
+| `style` | `ViewStyle` | — | Additional styles for the item container. |
+
+### AccordionTrigger
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode \| string` | — | Trigger label — strings are auto-styled. |
+| `style` | `PressableStyle` | — | Additional styles for the trigger. |
+
+### AccordionContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode \| string` | — | Content — strings are auto-styled. |
+| `style` | `ViewStyle` | — | Additional styles for the content container. |

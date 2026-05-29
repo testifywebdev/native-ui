@@ -1,0 +1,240 @@
+---
+title: Alert Dialog
+description: A modal dialog that interrupts the user with important content and expects a response. Built on top of rn-primitives with animated transitions.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { ExternalLinks } from "@//components/external-links";
+import { PortalInfoAlert } from "@//components/portal-info-alert";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/alert-dialog/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/alert-dialog/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      AlertDialog,
+      AlertDialogTrigger,
+      AlertDialogContent,
+      AlertDialogHeader,
+      AlertDialogFooter,
+      AlertDialogTitle,
+      AlertDialogDescription,
+      AlertDialogAction,
+      AlertDialogCancel,
+    } from '@/components/ui/alert-dialog';
+    import Button from '@/components/ui/button';
+
+    export function AlertDialogDemo() {
+      return (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button title="Delete Account" variant="destructive" />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel asChild>
+                <Button title="Cancel" variant="outline" />
+              </AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button title="Continue" variant="destructive" />
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "alert-dialog"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @rn-primitives/alert-dialog react-native-reanimated react-native-screens
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/alert-dialog.tsx`.**
+        <ComponentSource name="alert-dialog" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+<PortalInfoAlert />
+
+## Usage
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
+```
+
+```tsx
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button title="Open" />
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Confirm Action</AlertDialogTitle>
+      <AlertDialogDescription>
+        Are you sure you want to proceed?
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel asChild>
+        <Button title="Cancel" variant="outline" />
+      </AlertDialogCancel>
+      <AlertDialogAction asChild>
+        <Button title="Confirm" />
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+## Examples
+
+### Controlled state
+
+```tsx
+import { useState } from 'react';
+
+export function ControlledAlertDialog() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <Button title="Open Dialog" onPress={() => setOpen(true)} />
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Controlled Dialog</AlertDialogTitle>
+          <AlertDialogDescription>
+            This dialog is controlled externally.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel asChild>
+            <Button title="Cancel" variant="outline" onPress={() => setOpen(false)} />
+          </AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button title="OK" onPress={() => setOpen(false)} />
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+## API Reference
+
+### AlertDialog
+
+Root component. Manages open/closed state.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `open` | `boolean` | — | Controlled open state. |
+| `onOpenChange` | `(open: boolean) => void` | — | Callback when open state changes. |
+
+### AlertDialogTrigger
+
+The element that opens the dialog. Use `asChild` to compose with your own component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `asChild` | `boolean` | `false` | Merge props onto the child element. |
+
+### AlertDialogContent
+
+The dialog panel. Renders inside a portal with a backdrop overlay.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `portalHost` | `string` | — | Custom portal host name. |
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### AlertDialogHeader
+
+Container for `AlertDialogTitle` and `AlertDialogDescription`.
+
+### AlertDialogFooter
+
+Container for action buttons, laid out in a row aligned to the right.
+
+### AlertDialogTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### AlertDialogDescription
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### AlertDialogAction
+
+Wraps the confirm action. Closes the dialog when pressed.
+
+### AlertDialogCancel
+
+Wraps the cancel action. Closes the dialog when pressed.

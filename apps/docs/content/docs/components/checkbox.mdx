@@ -1,0 +1,146 @@
+---
+title: Checkbox
+description: An animated toggle control for boolean values. Features a spring-animated checkmark and smooth background color transition powered by react-native-reanimated.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+   import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
+import { Text } from 'react-native';
+
+export default function CheckboxDemo() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+   <>
+      <Text style={{ fontWeight: '600' }}>Accept terms and conditions</Text>
+    <Checkbox
+      checked={checked}
+      onCheckedChange={setChecked}
+      accessibilityLabel="Accept terms and conditions"
+    />
+   </>
+  );
+}
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "checkbox"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @expo/vector-icons react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/checkbox.tsx`.**
+        <ComponentSource name="checkbox" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Checkbox } from '@/components/ui/checkbox';
+```
+
+```tsx
+const [checked, setChecked] = useState(false);
+
+<Checkbox
+  checked={checked}
+  onCheckedChange={setChecked}
+/>
+```
+
+## Examples
+
+### With a label
+
+```tsx
+import { View, Text } from 'react-native';
+
+<View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+  <Checkbox
+    checked={agreed}
+    onCheckedChange={setAgreed}
+    accessibilityLabel="Accept terms"
+  />
+  <Text>I agree to the Terms of Service</Text>
+</View>
+```
+
+### Disabled state
+
+```tsx
+<Checkbox
+  checked={true}
+  onCheckedChange={() => {}}
+  disabled
+  accessibilityLabel="Read-only checkbox"
+/>
+```
+
+### Inside a form list
+
+```tsx
+{options.map((option) => (
+  <View key={option.id} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+    <Checkbox
+      checked={selected.includes(option.id)}
+      onCheckedChange={(val) => toggleOption(option.id, val)}
+      accessibilityLabel={option.label}
+    />
+    <Text>{option.label}</Text>
+  </View>
+))}
+```
+
+## API Reference
+
+### Checkbox
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `checked` | `boolean` | — | **Required.** Current checked state. |
+| `onCheckedChange` | `(checked: boolean) => void` | — | **Required.** Callback when state changes. |
+| `disabled` | `boolean` | `false` | Disables interaction and reduces opacity. |
+| `accessibilityLabel` | `string` | `"Checkbox"` | Screen reader label. |
+| `accessibilityHint` | `string` | `"Toggles the checkbox state"` | Screen reader hint. |

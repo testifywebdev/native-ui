@@ -1,0 +1,149 @@
+---
+title: Button
+description: An animated, accessible button with multiple variants, loading state, and press effects. Integrates with ButtonGroup for compound layouts.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Button from '@/components/ui/button';
+
+    export function ButtonDemo() {
+      return <Button title="Click me" onPress={() => console.log('pressed')} />;
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "button"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/button.tsx`.**
+        <ComponentSource name="button" />
+        Also copy `components/ui/button-group.tsx` (see Button Group docs).
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Button from '@/components/ui/button';
+```
+
+```tsx
+<Button title="Submit" onPress={handleSubmit} />
+```
+
+## Examples
+
+### All variants
+
+```tsx
+<Button title="Default" variant="default" />
+<Button title="Secondary" variant="secondary" />
+<Button title="Outline" variant="outline" />
+<Button title="Ghost" variant="ghost" />
+<Button title="Link" variant="link" />
+<Button title="Destructive" variant="destructive" />
+```
+
+### Loading state
+
+```tsx
+<Button title="Saving..." loading={true} />
+```
+
+### Disabled state
+
+```tsx
+<Button title="Unavailable" disabled={true} />
+```
+
+### With an icon
+
+```tsx
+import { Feather } from '@expo/vector-icons';
+
+<Button variant="outline" onPress={handleShare}>
+  <Feather name="share-2" size={16} color="black" />
+  <Button.Text>Share</Button.Text>
+</Button>
+
+// Or simply pass children:
+<Button onPress={handleAdd}>
+  <Feather name="plus" size={18} color="white" />
+</Button>
+```
+
+### Custom color
+
+Override the text/icon color without switching variant:
+
+```tsx
+<Button title="Custom" color="#8b5cf6" />
+```
+
+### Without press animation
+
+```tsx
+<Button title="Static" pressedEffect={false} />
+```
+
+## API Reference
+
+### Button
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Button label text. |
+| `onPress` | `() => void` | — | Press handler. |
+| `variant` | `"default" \| "outline" \| "secondary" \| "ghost" \| "link" \| "destructive"` | `"default"` | Visual style. |
+| `loading` | `boolean` | `false` | Shows an activity indicator and disables interaction. |
+| `disabled` | `boolean` | `false` | Disables the button. |
+| `pressedEffect` | `boolean` | `true` | Enables scale + color animation on press. |
+| `color` | `string` | — | Custom text/icon color override. |
+| `children` | `ReactNode` | — | Custom content rendered inside the button (alongside or instead of `title`). |
+| `containerStyle` | `ViewStyle` | — | Outer wrapper styles. |
+| `buttonStyle` | `ViewStyle & TextStyle` | — | Pressable styles. |
+| `textStyle` | `TextStyle` | — | Label text styles. |
+| `accessibilityLabel` | `string` | `title` | Screen reader label. |
+| `accessibilityHint` | `string` | — | Screen reader hint. |

@@ -1,0 +1,148 @@
+---
+title: Progress
+description: A spring-animated progress bar for displaying completion percentage, with accessibility support and smooth value transitions.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Progress from '@/components/ui/progress';
+    import { useState, useEffect } from 'react';
+
+    export function ProgressDemo() {
+      const [value, setValue] = useState(0);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setValue(66), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return <Progress value={value} />;
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "progress"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/progress.tsx`:**
+        <ComponentSource name="progress" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Progress from '@/components/ui/progress';
+```
+
+```tsx
+<Progress value={60} />
+```
+
+## Examples
+
+### Static value
+
+```tsx
+<Progress value={33} />
+<Progress value={66} />
+<Progress value={100} />
+```
+
+### Animated on mount
+
+```tsx
+import { useState, useEffect } from 'react';
+
+export function AnimatedProgress() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(75), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return <Progress value={progress} />;
+}
+```
+
+### Controlled by user action
+
+```tsx
+const [progress, setProgress] = useState(0);
+
+<Progress value={progress} />
+<Button title="Increment" onPress={() => setProgress((p) => Math.min(p + 10, 100))} />
+<Button title="Reset" onPress={() => setProgress(0)} variant="outline" />
+```
+
+### Inside a card
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitleGroup>
+      <CardTitle>Uploading…</CardTitle>
+      <CardDescription>{progress}% complete</CardDescription>
+    </CardTitleGroup>
+  </CardHeader>
+  <CardContent>
+    <Progress value={progress} />
+  </CardContent>
+</Card>
+```
+
+## API Reference
+
+### Progress
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `number` | `0` | Current progress from `0` to `100`. Values outside this range are clamped automatically. |
+| `style` | `ViewStyle` | — | Additional styles for the track container. |
+
+> The progress bar uses a spring animation (`mass: 0.3, damping: 15, stiffness: 120`) for smooth, physical-feeling transitions between values.
+>
+> Accessibility: the root View has `accessibilityRole="progressbar"` with `accessibilityValue` min/max/now/text set automatically.

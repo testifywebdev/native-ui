@@ -1,0 +1,183 @@
+---
+title: Radio Group
+description: A set of mutually exclusive radio buttons built on rn-primitives, with a styled indicator dot and full accessibility support.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { ExternalLinks } from "@/components/external-links";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/radio-group/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/radio-group/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+    import { View, Text } from 'react-native';
+    import { useState } from 'react';
+
+    const options = [
+      { value: 'comfortable', label: 'Comfortable' },
+      { value: 'compact', label: 'Compact' },
+      { value: 'spacious', label: 'Spacious' },
+    ];
+
+    export function RadioGroupDemo() {
+      const [selected, setSelected] = useState('comfortable');
+
+      return (
+        <RadioGroup value={selected} onValueChange={setSelected}>
+          {options.map((option) => (
+            <View key={option.value} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <RadioGroupItem value={option.value} aria-labelledby={`label-${option.value}`} />
+              <Text nativeID={`label-${option.value}`}>{option.label}</Text>
+            </View>
+          ))}
+        </RadioGroup>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "radio-group"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @rn-primitives/radio-group
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/radio-group.tsx`:**
+        <ComponentSource name="radio-group" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+```
+
+```tsx
+<RadioGroup value={value} onValueChange={setValue}>
+  <RadioGroupItem value="option-a" />
+  <RadioGroupItem value="option-b" />
+</RadioGroup>
+```
+
+## Examples
+
+### With labels
+
+```tsx
+import { View, Text } from 'react-native';
+
+<RadioGroup value={selected} onValueChange={setSelected}>
+  {['Option A', 'Option B', 'Option C'].map((label) => {
+    const val = label.toLowerCase().replace(' ', '-');
+    return (
+      <View key={val} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <RadioGroupItem value={val} aria-labelledby={`lbl-${val}`} />
+        <Text nativeID={`lbl-${val}`}>{label}</Text>
+      </View>
+    );
+  })}
+</RadioGroup>
+```
+
+### Disabled items
+
+```tsx
+<RadioGroup value={selected} onValueChange={setSelected}>
+  <RadioGroupItem value="enabled" />
+  <RadioGroupItem value="disabled" disabled />
+</RadioGroup>
+```
+
+### Horizontal layout
+
+```tsx
+<RadioGroup
+  value={selected}
+  onValueChange={setSelected}
+  style={{ flexDirection: 'row', gap: 16 }}
+>
+  <RadioGroupItem value="yes" />
+  <RadioGroupItem value="no" />
+</RadioGroup>
+```
+
+### Inside a form with Field
+
+```tsx
+<Field>
+  <FieldLabel>Preferred layout</FieldLabel>
+  <RadioGroup value={layout} onValueChange={setLayout}>
+    {['grid', 'list', 'compact'].map((val) => (
+      <View key={val} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <RadioGroupItem value={val} />
+        <Text style={{ textTransform: 'capitalize' }}>{val}</Text>
+      </View>
+    ))}
+  </RadioGroup>
+</Field>
+```
+
+## API Reference
+
+### RadioGroup
+
+Extends `@rn-primitives/radio-group` Root props.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | The currently selected item value. |
+| `onValueChange` | `(value: string) => void` | — | Callback when selection changes. |
+| `style` | `ViewStyle` | — | Additional container styles. Defaults to `gap: spacing.md`. |
+
+### RadioGroupItem
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | **Required.** Unique value for this option. |
+| `disabled` | `boolean` | `false` | Disables this item (reduces opacity, prevents selection). |
+| `style` | `ViewStyle` | — | Additional styles for the outer circle. |
+| `aria-labelledby` | `string` | — | `nativeID` of a sibling `Text` element used as the accessibility label. |

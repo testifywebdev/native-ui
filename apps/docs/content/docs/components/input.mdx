@@ -1,0 +1,198 @@
+---
+title: Input
+description: An animated text input with label, hint, error, and icon support. Features a smooth focus ring transition powered by react-native-reanimated and supports multiline mode.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Input from '@/components/ui/input';
+    import { useState } from 'react';
+
+    export function InputDemo() {
+      const [value, setValue] = useState('');
+
+      return (
+        <Input
+          label="Email"
+          placeholder="you@example.com"
+          value={value}
+          onChangeText={setValue}
+          inputMode="email"
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "input"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/input.tsx`.**
+        <ComponentSource name="input" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Input from '@/components/ui/input';
+```
+
+```tsx
+<Input
+  label="Username"
+  placeholder="Enter your username"
+  value={username}
+  onChangeText={setUsername}
+/>
+```
+
+## Examples
+
+### With icons
+
+```tsx
+import { Feather } from '@expo/vector-icons';
+
+<Input
+  label="Search"
+  placeholder="Search..."
+  leftIcon={<Feather name="search" size={16} color="#71717a" />}
+/>
+```
+
+### Password input
+
+```tsx
+const [show, setShow] = useState(false);
+
+<Input
+  label="Password"
+  placeholder="••••••••"
+  secureTextEntry={!show}
+  rightIcon={
+    <Feather name={show ? 'eye-off' : 'eye'} size={16} color="#71717a" />
+  }
+  onRightIconPress={() => setShow((v) => !v)}
+/>
+```
+
+### Error state
+
+```tsx
+<Input
+  label="Email"
+  placeholder="you@example.com"
+  value={email}
+  onChangeText={setEmail}
+  error="Please enter a valid email address."
+/>
+```
+
+### With hint text
+
+```tsx
+<Input
+  label="Username"
+  placeholder="Choose a username"
+  hint="Must be 3–20 characters. Letters and numbers only."
+/>
+```
+
+### Ghost variant
+
+```tsx
+<Input
+  placeholder="Search..."
+  variant="ghost"
+  leftIcon={<Feather name="search" size={16} color="#71717a" />}
+/>
+```
+
+### Multiline (textarea)
+
+```tsx
+<Input
+  label="Bio"
+  placeholder="Tell us about yourself..."
+  multiline
+  numberOfLines={4}
+/>
+```
+
+### Disabled state
+
+```tsx
+<Input
+  label="Read-only"
+  value="Cannot change this"
+  disabled
+/>
+```
+
+## API Reference
+
+### Input
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Label text rendered above the input. |
+| `placeholder` | `string` | — | Placeholder text. |
+| `value` | `string` | — | Controlled value. |
+| `onChangeText` | `(text: string) => void` | — | Change handler. |
+| `variant` | `"default" \| "ghost" \| "destructive"` | `"default"` | Visual style. `"ghost"` removes the border at rest. |
+| `disabled` | `boolean` | `false` | Disables the input and reduces opacity. |
+| `error` | `string` | — | Error message rendered below the input. Turns the border destructive. |
+| `hint` | `string` | — | Helper text rendered below the input (hidden when `error` is set). |
+| `leftIcon` | `ReactNode` | — | Icon rendered inside the left edge. |
+| `rightIcon` | `ReactNode` | — | Icon rendered inside the right edge. |
+| `onRightIconPress` | `() => void` | — | Makes the right icon pressable (e.g., toggle password visibility). |
+| `secureTextEntry` | `boolean` | — | Masks input text. |
+| `inputMode` | `InputModeOptions` | — | Keyboard type hint (e.g., `"email"`, `"numeric"`). |
+| `keyboardType` | `KeyboardTypeOptions` | — | Low-level keyboard type. |
+| `multiline` | `boolean` | `false` | Enables multiline (textarea) mode. |
+| `numberOfLines` | `number` | `1` | Number of visible lines in multiline mode. |
+| `containerStyle` | `ViewStyle` | — | Outer wrapper styles. |
+| `inputStyle` | `TextStyle` | — | Inner `TextInput` styles. |
+| `labelStyle` | `TextStyle` | — | Label text styles. |

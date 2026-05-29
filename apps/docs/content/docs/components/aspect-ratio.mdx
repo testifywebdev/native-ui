@@ -1,0 +1,127 @@
+---
+title: Aspect Ratio
+description: A layout primitive that maintains a fixed width-to-height ratio for its child content, built on rn-primitives.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { ExternalLinks } from "@//components/external-links";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/aspect-ratio/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/aspect-ratio/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import AspectRatio from '@/components/ui/aspect-ratio';
+    import { Image } from 'react-native';
+
+    export function AspectRatioDemo() {
+      return (
+        <AspectRatio ratio={16 / 9} style={{ width: '100%' }}>
+          <Image
+            source={{ uri: 'https://picsum.photos/800/450' }}
+            style={{ width: '100%', height: '100%', borderRadius: 12 }}
+            resizeMode="cover"
+          />
+        </AspectRatio>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "aspect-ratio"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependency:**
+        ```bash
+        npx expo install @rn-primitives/aspect-ratio
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/aspect-ratio.tsx`:**
+        <ComponentSource name="aspect-ratio" />
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import AspectRatio from '@/components/ui/aspect-ratio';
+```
+
+```tsx
+<AspectRatio ratio={16 / 9}>
+  {/* your content */}
+</AspectRatio>
+```
+
+## Examples
+
+### Square crop
+
+```tsx
+<AspectRatio ratio={1} style={{ width: 200 }}>
+  <Image source={{ uri: '...' }} style={{ flex: 1 }} resizeMode="cover" />
+</AspectRatio>
+```
+
+### Portrait (4:5)
+
+```tsx
+<AspectRatio ratio={4 / 5} style={{ width: '100%' }}>
+  <Image source={{ uri: '...' }} style={{ flex: 1 }} resizeMode="cover" />
+</AspectRatio>
+```
+
+### Video thumbnail (16:9)
+
+```tsx
+<AspectRatio ratio={16 / 9} style={{ width: '100%', borderRadius: 12, overflow: 'hidden' }}>
+  <Image source={{ uri: '...' }} style={{ flex: 1 }} resizeMode="cover" />
+</AspectRatio>
+```
+
+## API Reference
+
+### AspectRatio
+
+This is a direct re-export of `@rn-primitives/aspect-ratio` Root. See the [RN Primitives docs](https://rnprimitives.com/aspect-ratio/#props) for the full API.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ratio` | `number` | `1` | Width-to-height ratio (e.g. `16/9`, `4/3`, `1`). |
+| `style` | `ViewStyle` | — | Additional styles applied to the outer container. |
+| `children` | `ReactNode` | — | Content to constrain. |

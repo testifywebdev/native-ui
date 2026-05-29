@@ -1,0 +1,214 @@
+---
+title: Card
+description: A flexible container with header, content, footer, and title sections. Supports default and compact size variants with automatic theme-aware styling.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      Card,
+      CardHeader,
+      CardTitleGroup,
+      CardTitle,
+      CardDescription,
+      CardContent,
+      CardFooter,
+    } from '@/components/ui/card';
+    import Button from '@/components/ui/button';
+    import { Text } from 'react-native';
+
+    export function CardDemo() {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitleGroup>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card description goes here.</CardDescription>
+            </CardTitleGroup>
+          </CardHeader>
+          <CardContent>
+            <Text>Card body content.</Text>
+          </CardContent>
+          <CardFooter>
+            <Button title="Cancel" variant="outline" />
+            <Button title="Confirm" />
+          </CardFooter>
+        </Card>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "card"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/card.tsx`.**
+        <ComponentSource name="card" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitleGroup,
+  CardTitle,
+  CardDescription,
+  CardAction,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+```
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitleGroup>
+      <CardTitle>My Card</CardTitle>
+      <CardDescription>A brief description</CardDescription>
+    </CardTitleGroup>
+    <CardAction>
+      {/* e.g. a menu button */}
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    {/* main content */}
+  </CardContent>
+  <CardFooter>
+    <Button title="Action" />
+  </CardFooter>
+</Card>
+```
+
+## Examples
+
+### Simple card
+
+```tsx
+<Card>
+  <CardTitle>Notifications</CardTitle>
+  <CardContent>
+    <Text>You have 3 unread messages.</Text>
+  </CardContent>
+</Card>
+```
+
+### Compact size
+
+```tsx
+<Card size="sm">
+  <CardContent>
+    <Text>A compact card with less padding.</Text>
+  </CardContent>
+</Card>
+```
+
+### Stat card
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitleGroup>
+      <CardTitle>Total Revenue</CardTitle>
+      <CardDescription>+20.1% from last month</CardDescription>
+    </CardTitleGroup>
+    <CardAction>
+      <Feather name="trending-up" size={20} />
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <Text style={{ fontSize: 32, fontWeight: '700' }}>$45,231.89</Text>
+  </CardContent>
+</Card>
+```
+
+## API Reference
+
+### Card
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"default" \| "sm"` | `"default"` | Padding and border-radius size. `"sm"` uses `spacing.md` / `radius.lg`; `"default"` uses `spacing.lg` / `radius.xl`. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+
+### CardHeader
+
+A row container that places its children between a `CardTitleGroup` and an optional `CardAction`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### CardTitleGroup
+
+Wraps `CardTitle` and `CardDescription` in a flex column.
+
+### CardTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### CardDescription
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### CardAction
+
+Non-shrinkable slot for an action button or icon in the card header.
+
+### CardContent
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### CardFooter
+
+A right-aligned row for action buttons, separated from the content by a top border.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |

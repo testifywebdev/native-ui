@@ -1,0 +1,213 @@
+---
+title: Input OTP
+description: A one-time password input with individual character slots, animated cursor blinking, spring character entrance, and full accessibility support.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import { useState } from 'react';
+import { Text } from 'react-native';
+
+export default function InputOTPDemo() {
+  const [value, setValue] = useState('');
+
+  return (
+    <>
+    <Text style={{ fontWeight: '600' }}>Enter your OTP</Text>
+    <InputOTP maxLength={6} value={value} onChangeText={setValue}>
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+    </>
+  );
+}
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "input-otp"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/input-otp.tsx`.**
+        <ComponentSource name="input-otp" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from '@/components/ui/input-otp';
+```
+
+```tsx
+<InputOTP maxLength={4} value={otp} onChangeText={setOtp}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+## Examples
+
+### With separator
+
+```tsx
+<InputOTP maxLength={6} value={otp} onChangeText={setOtp}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### On complete callback
+
+```tsx
+<InputOTP
+  maxLength={6}
+  value={otp}
+  onChangeText={setOtp}
+  onComplete={(code) => {
+    console.log('Code entered:', code);
+    verifyCode(code);
+  }}
+>
+  <InputOTPGroup>
+    {Array.from({ length: 6 }).map((_, i) => (
+      <InputOTPSlot key={i} index={i} />
+    ))}
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Disabled state
+
+```tsx
+<InputOTP maxLength={4} value="1234" disabled>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+### Auto-submit on complete
+
+```tsx
+<InputOTP
+  maxLength={4}
+  onComplete={handleVerify}
+>
+  <InputOTPGroup>
+    {[0, 1, 2, 3].map((i) => <InputOTPSlot key={i} index={i} />)}
+  </InputOTPGroup>
+</InputOTP>
+```
+
+## API Reference
+
+### InputOTP
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `maxLength` | `number` | — | **Required.** Total number of OTP characters. |
+| `value` | `string` | — | Controlled value. |
+| `onChangeText` | `(value: string) => void` | — | Change handler. |
+| `onComplete` | `(value: string) => void` | — | Called when `value.length === maxLength`. |
+| `disabled` | `boolean` | `false` | Disables the input and reduces opacity. |
+| `keyboardType` | `KeyboardTypeOptions` | `"number-pad"` | Input keyboard type. |
+| `containerStyle` | `ViewStyle` | — | Additional styles for the outer pressable container. |
+
+### InputOTPGroup
+
+A horizontal row of slots. Multiple groups can be used with `InputOTPSeparator` between them.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### InputOTPSlot
+
+One character slot. Renders the character or an animated blinking cursor.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `index` | `number` | — | **Required.** Zero-based position of this slot in the OTP. |
+| `style` | `ViewStyle` | — | Additional slot container styles. |
+| `charStyle` | `TextStyle` | — | Additional character text styles. |
+
+### InputOTPSeparator
+
+A visual dash divider between groups.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |

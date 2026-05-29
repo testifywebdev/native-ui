@@ -1,0 +1,261 @@
+---
+title: Carousel
+description: A swipeable slideshow component with optional looping, autoplay, navigation buttons, and dot indicators. Supports both horizontal and vertical orientations.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+   import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+} from '@/components/ui/carousel';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+
+const slides = [
+  { id: '1', title: 'Slide 1', color: '#fca5a5' }, 
+  { id: '2', title: 'Slide 2', color: '#bae6fd' }, 
+  { id: '3', title: 'Slide 3', color: '#bbf7d0' }, 
+  { id: '4', title: 'Slide 4', color: '#fef08a' },
+];
+
+export default function CarouselDemo() {
+  return (
+    <View style={styles.container}>
+      <Carousel style={styles.carousel}>
+        <CarouselContent>
+          {slides.map((slide) => (
+            <CarouselItem key={slide.id}>
+              <View style={styles.slideWrapper}>
+                <View style={[styles.slideCard, { backgroundColor: slide.color }]}>
+                  <Text style={styles.title}>{slide.title}</Text>
+                </View>
+              </View>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious style={{ left: 24 }} />
+        <CarouselNext style={{ right: 24 }} />
+        
+        <CarouselDots style={{ marginTop: 24 }} />
+      </Carousel>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  carousel: {
+    width: '100%',
+    maxWidth: 600, 
+  },
+  slideWrapper: {
+
+    paddingHorizontal: 16, 
+  },
+  slideCard: {
+    height: 350, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 8,
+    ...Platform.select({
+      web: {
+        boxShadow: '0px 8px 24px rgba(0,0,0,0.12)',
+      } as any,
+    }),
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#1e293b', 
+    letterSpacing: -0.5,
+  },
+});
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "carousel"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/carousel.tsx`.**
+        <ComponentSource name="carousel" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+} from '@/components/ui/carousel';
+```
+
+```tsx
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>{/* slide content */}</CarouselItem>
+    <CarouselItem>{/* slide content */}</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+
+## Examples
+
+### With autoplay
+
+```tsx
+<Carousel autoplayInterval={3000} loop>
+  <CarouselContent>
+    {items.map((item) => (
+      <CarouselItem key={item.id}>
+        <SlideCard item={item} />
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselDots />
+</Carousel>
+```
+
+### Vertical carousel
+
+```tsx
+<Carousel orientation="vertical">
+  <CarouselContent>
+    {items.map((item) => (
+      <CarouselItem key={item.id} style={{ height: 200 }}>
+        <SlideCard item={item} />
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+</Carousel>
+```
+
+### Looping carousel
+
+```tsx
+<Carousel loop>
+  <CarouselContent>
+    <CarouselItem>
+      <SlideA />
+    </CarouselItem>
+    <CarouselItem>
+      <SlideB />
+    </CarouselItem>
+    <CarouselItem>
+      <SlideC />
+    </CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+```
+
+## API Reference
+
+### Carousel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `loop` | `boolean` | `false` | Enables infinite looping. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Scroll direction. |
+| `autoplayInterval` | `number` | `0` | Milliseconds between auto-advances. `0` disables autoplay. |
+| `style` | `ViewStyle` | — | Additional styles for the root container. |
+
+### CarouselContent
+
+The scrollable list container. Accepts all `FlatList` props except `data`, `renderItem`, `horizontal`, and `ref`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the list wrapper. |
+
+### CarouselItem
+
+One slide in the carousel. Its size is automatically set to fill the carousel width (or height in vertical mode).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the slide container. |
+
+### CarouselPrevious
+
+A button that scrolls to the previous slide. Automatically disabled on the first slide when `loop` is `false`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the button. |
+
+### CarouselNext
+
+A button that scrolls to the next slide. Automatically disabled on the last slide when `loop` is `false`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the button. |
+
+### CarouselDots
+
+Pagination dot indicators. Tapping a dot jumps to that slide.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the dots container. |

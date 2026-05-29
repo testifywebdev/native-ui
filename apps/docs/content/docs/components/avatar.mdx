@@ -1,0 +1,155 @@
+---
+title: Avatar
+description: An image element with a fallback for representing a user, with automatic initials generation and graceful image error handling.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { Avatar } from '@/components/ui/avatar';
+
+    export function AvatarDemo() {
+      return (
+        <Avatar
+          name="John Doe"
+          picture="https://github.com/johndoe.png"
+          size={48}
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "avatar"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/avatar.tsx`.**
+        <ComponentSource name="avatar" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+```
+
+```tsx
+<Avatar name="Jane Smith" size={40} />
+```
+
+## Examples
+
+### With a profile picture
+
+```tsx
+<Avatar
+  name="Alice Johnson"
+  picture="https://example.com/alice.jpg"
+  size={56}
+/>
+```
+
+### Initials fallback
+
+When `picture` is omitted or fails to load, the component automatically renders the user's initials derived from `name`.
+
+```tsx
+<Avatar name="Robert Brown" size={48} />
+// Renders: "RB"
+```
+
+### Custom fallback content
+
+Use `AvatarFallback` to supply your own fallback UI inside the avatar circle.
+
+```tsx
+import { Feather } from '@expo/vector-icons';
+
+<Avatar name="Anonymous" size={48}>
+  <AvatarFallback>
+    <Feather name="user" size={24} color="white" />
+  </AvatarFallback>
+</Avatar>
+```
+
+### Size variants
+
+```tsx
+<Avatar name="Sam Lee" size={32} />
+<Avatar name="Sam Lee" size={48} />
+<Avatar name="Sam Lee" size={64} />
+<Avatar name="Sam Lee" size={96} />
+```
+
+### Avatar group
+
+```tsx
+import { View } from 'react-native';
+
+<View style={{ flexDirection: 'row' }}>
+  {users.map((user, i) => (
+    <View key={user.id} style={{ marginLeft: i > 0 ? -12 : 0, zIndex: users.length - i }}>
+      <Avatar name={user.name} picture={user.avatar} size={40} />
+    </View>
+  ))}
+</View>
+```
+
+## API Reference
+
+### Avatar
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `string` | — | **Required.** User's full name — used for initials and accessibility label. |
+| `picture` | `string` | — | URI of the profile image. Falls back to initials on error. |
+| `size` | `number` | `40` | Diameter of the avatar circle in pixels. |
+| `accessibilityLabel` | `string` | `name` | Custom accessibility label. |
+| `children` | `ReactNode` | — | Custom fallback content rendered when no image is available. |
+
+### AvatarFallback
+
+A simple centered container rendered inside the avatar circle. Use it when you want to supply custom fallback UI.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `children` | `ReactNode` | — | Fallback content. |

@@ -1,0 +1,149 @@
+---
+title: Date Picker
+description: A pressable input that opens a modal calendar for date selection. Displays the selected date in a human-readable format and composes the Calendar component internally.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { DatePicker } from '@/components/ui/date-picker';
+    import { useState } from 'react';
+
+    export function DatePickerDemo() {
+      const [date, setDate] = useState('');
+
+      return (
+        <DatePicker
+          value={date}
+          onChange={setDate}
+          placeholder="Pick a date"
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "date-picker"]} />
+        This will also install the `calendar` component as a dependency.
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @expo/vector-icons react-native-calendars
+        ```
+      </Step>
+      <Step>
+        **Ensure the [Calendar](/docs/calendar) component is installed** at `@/components/ui/calendar`.
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/date-picker.tsx`.**
+        <ComponentSource name="date-picker" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { DatePicker } from '@/components/ui/date-picker';
+```
+
+```tsx
+const [date, setDate] = useState('');
+
+<DatePicker
+  value={date}
+  onChange={setDate}
+/>
+```
+
+## Examples
+
+### With a default value
+
+```tsx
+<DatePicker
+  value="2024-06-15"
+  onChange={(date) => console.log(date)}
+/>
+```
+
+### Custom placeholder
+
+```tsx
+<DatePicker
+  placeholder="Select your birthday"
+  onChange={setDate}
+/>
+```
+
+### Inside a form field
+
+```tsx
+import { Field, FieldLabel } from '@/components/ui/field';
+
+<Field>
+  <FieldLabel>Appointment Date</FieldLabel>
+  <DatePicker
+    value={appointmentDate}
+    onChange={setAppointmentDate}
+    placeholder="Choose a date"
+  />
+</Field>
+```
+
+### With custom container style
+
+```tsx
+<DatePicker
+  value={date}
+  onChange={setDate}
+  style={{ borderRadius: 8, borderColor: '#8b5cf6' }}
+/>
+```
+
+## API Reference
+
+### DatePicker
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `string` | — | Selected date as `YYYY-MM-DD` string. |
+| `onChange` | `(date: string) => void` | — | Callback with the selected date string. |
+| `placeholder` | `string` | `"Pick a date"` | Text shown when no date is selected. |
+| `style` | `ViewStyle` | — | Additional styles for the trigger input row. |
+
+> Dates are stored and passed as ISO date strings (`YYYY-MM-DD`) and displayed in `en-US` long format (e.g. "June 15, 2024").

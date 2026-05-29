@@ -1,0 +1,160 @@
+---
+title: Calendar
+description: A fully themed calendar component built on react-native-calendars with custom navigation arrows and support for marking, selecting, and disabling dates.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { ExternalLinks } from "@//components/external-links";
+
+<ExternalLinks
+  links={[
+    { title: 'React Native Calendars Docs', url: 'https://wix.github.io/react-native-calendars/docs/Intro' },
+    { title: 'React Native Calendars Docs API Reference', url: 'https://wix.github.io/react-native-calendars/docs/Components/Calendar' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { Calendar } from '@/components/ui/calendar';
+    import { useState } from 'react';
+
+    export function CalendarDemo() {
+      const [selected, setSelected] = useState('');
+
+      return (
+        <Calendar
+          onDayPress={(day) => setSelected(day.dateString)}
+          markedDates={{
+            [selected]: { selected: true, selectedColor: '#18181b' },
+          }}
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "calendar"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-calendars @expo/vector-icons
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/calendar.tsx`.**
+        <ComponentSource name="calendar" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Calendar } from '@/components/ui/calendar';
+```
+
+```tsx
+<Calendar
+  onDayPress={(day) => console.log(day.dateString)}
+/>
+```
+
+## Examples
+
+### Selected date
+
+```tsx
+const [selected, setSelected] = useState('2024-01-15');
+
+<Calendar
+  current={selected}
+  onDayPress={(day) => setSelected(day.dateString)}
+  markedDates={{
+    [selected]: { selected: true },
+  }}
+/>
+```
+
+### Date range
+
+```tsx
+<Calendar
+  markingType="period"
+  markedDates={{
+    '2024-01-10': { startingDay: true, color: '#18181b', textColor: 'white' },
+    '2024-01-11': { color: '#e4e4e7', textColor: '#09090b' },
+    '2024-01-12': { endingDay: true, color: '#18181b', textColor: 'white' },
+  }}
+/>
+```
+
+### Disabling dates
+
+```tsx
+<Calendar
+  minDate="2024-01-01"
+  maxDate="2024-12-31"
+  disabledDaysIndexes={[0, 6]} // disable weekends
+/>
+```
+
+### Custom container style
+
+```tsx
+<Calendar
+  containerStyle={{ alignSelf: 'center', width: '100%' }}
+  onDayPress={(day) => setSelected(day.dateString)}
+/>
+```
+
+## API Reference
+
+### Calendar
+
+Extends all [`react-native-calendars` CalendarProps](https://github.com/wix/react-native-calendars).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `containerStyle` | `ViewStyle` | — | Styles for the outer container (border, padding, background). |
+| `onDayPress` | `(day: DateData) => void` | — | Callback when a day is tapped. |
+| `markedDates` | `MarkedDates` | — | Object of dates to mark. Keys are ISO date strings (`YYYY-MM-DD`). |
+| `markingType` | `string` | `"custom"` | Marking style — `"simple"`, `"period"`, `"multi-dot"`, `"custom"`. |
+| `current` | `string` | — | Initially visible month (`YYYY-MM-DD`). |
+| `minDate` | `string` | — | Earliest selectable date. |
+| `maxDate` | `string` | — | Latest selectable date. |
+| `theme` | `object` | — | Additional theme overrides merged into the default themed config. |
+
+> The component automatically applies your app's theme colors (foreground, muted, primary, etc.) so no manual theming is needed in most cases.

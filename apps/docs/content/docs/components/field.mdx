@@ -1,0 +1,224 @@
+---
+title: Field
+description: A flexible form field wrapper with label, description, error message, and separator support. Handles vertical and horizontal layouts and provides context-aware error rendering.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      FieldSet,
+      FieldLegend,
+      FieldGroup,
+      Field,
+      FieldLabel,
+      FieldDescription,
+      FieldError,
+    } from '@/components/ui/field';
+    import Input from '@/components/ui/input';
+
+    export function FieldDemo() {
+      return (
+        <FieldSet>
+          <FieldLegend>Personal Information</FieldLegend>
+          <FieldGroup>
+            <Field error="Name is required">
+              <FieldLabel>Full Name</FieldLabel>
+              <Input placeholder="John Doe" />
+              <FieldError />
+            </Field>
+            <Field>
+              <FieldLabel>Email</FieldLabel>
+              <Input placeholder="john@example.com" inputMode="email" />
+              <FieldDescription>We'll never share your email.</FieldDescription>
+            </Field>
+          </FieldGroup>
+        </FieldSet>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "field"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/field.tsx`.**
+        <ComponentSource name="field" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  FieldSet,
+  FieldLegend,
+  FieldGroup,
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldSeparator,
+} from '@/components/ui/field';
+```
+
+```tsx
+<Field error={errors.email}>
+  <FieldLabel>Email</FieldLabel>
+  <Input placeholder="you@example.com" inputMode="email" />
+  <FieldError />
+</Field>
+```
+
+## Examples
+
+### Horizontal layout
+
+```tsx
+<Field orientation="horizontal">
+  <FieldLabel>Dark Mode</FieldLabel>
+  <Switch value={darkMode} onValueChange={setDarkMode} />
+</Field>
+```
+
+### Grouped fields with a legend
+
+```tsx
+<FieldSet>
+  <FieldLegend>Billing Address</FieldLegend>
+  <FieldGroup>
+    <Field>
+      <FieldLabel>Street</FieldLabel>
+      <Input placeholder="123 Main St" />
+    </Field>
+    <Field>
+      <FieldLabel>City</FieldLabel>
+      <Input placeholder="New York" />
+    </Field>
+  </FieldGroup>
+</FieldSet>
+```
+
+### With separator
+
+```tsx
+<FieldGroup>
+  <Field>
+    <FieldLabel>First Name</FieldLabel>
+    <Input placeholder="Jane" />
+  </Field>
+  <FieldSeparator />
+  <Field>
+    <FieldLabel>Last Name</FieldLabel>
+    <Input placeholder="Smith" />
+  </Field>
+</FieldGroup>
+```
+
+### Error state
+
+`FieldError` reads the `error` prop from the parent `Field` context and renders only when an error is present.
+
+```tsx
+<Field error={formErrors.username}>
+  <FieldLabel>Username</FieldLabel>
+  <Input value={username} onChangeText={setUsername} />
+  <FieldError />
+  {/* renders the error message, or nothing if error is undefined */}
+</Field>
+```
+
+## API Reference
+
+### FieldSet
+
+A semantic grouping container. Adds `gap: 16` between children.
+
+### FieldLegend
+
+A bold heading for a `FieldSet`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### FieldGroup
+
+Groups multiple `Field` components with `gap: 24`.
+
+### Field
+
+The main wrapper that provides context to `FieldError`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Layout direction for label + control. |
+| `error` | `string` | — | Error message. Passed to `FieldError` via context. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+
+### FieldLabel
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### FieldDescription
+
+Muted helper text rendered below the control.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### FieldError
+
+Reads `error` from the nearest `Field` context. Renders nothing when no error is present.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### FieldSeparator
+
+A 1px horizontal divider using `colors.border`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |

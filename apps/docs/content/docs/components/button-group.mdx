@@ -1,0 +1,157 @@
+---
+title: Button Group
+description: A layout primitive that joins multiple buttons or text elements into a single connected row or column, automatically handling border radius and dividers.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { ButtonGroup } from '@/components/ui/button-group';
+    import Button from '@/components/ui/button';
+
+    export function ButtonGroupDemo() {
+      return (
+        <ButtonGroup orientation="horizontal">
+          <Button title="Day" variant="outline" />
+          <Button title="Week" variant="outline" />
+          <Button title="Month" variant="outline" />
+        </ButtonGroup>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "button-group"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/button-group.tsx`.**
+        <ComponentSource name="button-group" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { ButtonGroup, ButtonGroupText, ButtonGroupSeparator } from '@/components/ui/button-group';
+import Button from '@/components/ui/button';
+```
+
+```tsx
+<ButtonGroup>
+  <Button title="Left" variant="outline" />
+  <Button title="Right" variant="outline" />
+</ButtonGroup>
+```
+
+## Examples
+
+### Horizontal group (default)
+
+```tsx
+<ButtonGroup orientation="horizontal">
+  <Button title="Bold" variant="outline" />
+  <Button title="Italic" variant="outline" />
+  <Button title="Underline" variant="outline" />
+</ButtonGroup>
+```
+
+### Vertical group
+
+```tsx
+<ButtonGroup orientation="vertical">
+  <Button title="Option A" variant="outline" />
+  <Button title="Option B" variant="outline" />
+  <Button title="Option C" variant="outline" />
+</ButtonGroup>
+```
+
+### Mixed with label
+
+Use `ButtonGroupText` to add a non-interactive label inside the group:
+
+```tsx
+<ButtonGroup>
+  <ButtonGroupText>Sort by:</ButtonGroupText>
+  <Button title="Name" variant="outline" />
+  <Button title="Date" variant="outline" />
+</ButtonGroup>
+```
+
+### With separator
+
+```tsx
+<ButtonGroup>
+  <Button title="Cut" variant="outline" />
+  <ButtonGroupSeparator />
+  <Button title="Copy" variant="outline" />
+  <ButtonGroupSeparator />
+  <Button title="Paste" variant="outline" />
+</ButtonGroup>
+```
+
+## API Reference
+
+### ButtonGroup
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Direction of the button group. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `children` | `ReactNode` | — | Button elements to group. |
+
+### ButtonGroupText
+
+A non-interactive label element styled to match the group height.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | `ReactNode` | — | Optional leading icon. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `textStyle` | `TextStyle` | — | Additional text styles. |
+| `children` | `string \| ReactNode` | — | Label content. |
+
+### ButtonGroupSeparator
+
+A thin divider line between group items. Automatically orients based on the group direction.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `orientation` | `"horizontal" \| "vertical"` | Inherits from group | Override the separator orientation. |
+| `style` | `ViewStyle` | — | Additional styles. |

@@ -1,0 +1,121 @@
+---
+title: Label
+description: An accessible form label built on the Typography component, with optional required indicator and disabled state.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Label from '@/components/ui/label';
+    import Input from '@/components/ui/input';
+
+    export function LabelDemo() {
+      return (
+        <>
+          <Label required>Email address</Label>
+          <Input placeholder="you@example.com" inputMode="email" />
+        </>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "label"]} />
+        This also installs the `typography` component.
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Ensure the Typography component is installed** at `@/components/ui/typography`.
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/label.tsx`.**
+        <ComponentSource name="label" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Label from '@/components/ui/label';
+```
+
+```tsx
+<Label>Username</Label>
+```
+
+## Examples
+
+### Required field
+
+Appends a destructive-colored asterisk and includes "Required field" in the screen reader label.
+
+```tsx
+<Label required>Password</Label>
+```
+
+### Disabled state
+
+```tsx
+<Label disabled>Unavailable field</Label>
+```
+
+### Required and disabled
+
+```tsx
+<Label required disabled>
+  Locked setting
+</Label>
+```
+
+### With custom styles
+
+```tsx
+<Label style={{ fontSize: 16, color: '#8b5cf6' }}>
+  Custom Label
+</Label>
+```
+
+## API Reference
+
+### Label
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `required` | `boolean` | `false` | Appends a `*` in `colors.destructive` and adds "Required field" to the accessibility label. |
+| `disabled` | `boolean` | `false` | Reduces opacity to 50% and signals "Disabled" to screen readers. |
+| `style` | `TextStyle` | — | Additional text styles. |
+| `accessibilityLabel` | `string` | Auto-generated | Override the computed accessibility label. |
+| `children` | `string \| ReactNode` | — | Label content. |

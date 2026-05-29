@@ -1,0 +1,143 @@
+---
+title: Switch
+description: An animated toggle switch with smooth thumb translation and track color transition, powered by react-native-reanimated. Fully accessible with role and state props.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Switch from '@/components/ui/switch';
+    import { useState } from 'react';
+
+    export function SwitchDemo() {
+      const [enabled, setEnabled] = useState(false);
+
+      return (
+        <Switch
+          value={enabled}
+          onValueChange={setEnabled}
+          accessibilityLabel="Enable notifications"
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "switch"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/switch.tsx`:**
+        <ComponentSource name="switch" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Switch from '@/components/ui/switch';
+```
+
+```tsx
+const [enabled, setEnabled] = useState(false);
+
+<Switch value={enabled} onValueChange={setEnabled} />
+```
+
+## Examples
+
+### With a label
+
+```tsx
+import { View, Text } from 'react-native';
+
+<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+  <Text>Dark mode</Text>
+  <Switch
+    value={darkMode}
+    onValueChange={setDarkMode}
+    accessibilityLabel="Toggle dark mode"
+  />
+</View>
+```
+
+### Disabled state
+
+```tsx
+<Switch value={true} onValueChange={() => {}} disabled accessibilityLabel="Read-only toggle" />
+```
+
+### Settings list
+
+```tsx
+const settings = [
+  { label: 'Push notifications', key: 'push' },
+  { label: 'Email digest', key: 'email' },
+  { label: 'Marketing emails', key: 'marketing' },
+];
+
+{settings.map((setting) => (
+  <View key={setting.key} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12 }}>
+    <Text>{setting.label}</Text>
+    <Switch
+      value={prefs[setting.key]}
+      onValueChange={(val) => updatePref(setting.key, val)}
+      accessibilityLabel={setting.label}
+    />
+  </View>
+))}
+```
+
+## API Reference
+
+### Switch
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `boolean` | — | **Required.** Current on/off state. |
+| `onValueChange` | `(value: boolean) => void` | — | **Required.** Callback when state changes. |
+| `disabled` | `boolean` | `false` | Prevents toggling and reduces opacity to 50%. |
+| `accessibilityLabel` | `string` | — | Screen reader label — highly recommended. |
+| `accessibilityHint` | `string` | — | Additional screen reader context. |
+
+> **Dimensions:** track is 44×24px, thumb is 20×20px. These are fixed constants to match standard iOS/Android switch proportions. Customize via the source if needed.

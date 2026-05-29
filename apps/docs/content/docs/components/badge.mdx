@@ -1,0 +1,137 @@
+---
+title: Badge
+description: A small status indicator for displaying categories, labels, or counts. Supports multiple visual variants with optional leading icon.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Badge from '@/components/ui/badge';
+
+    export function BadgeDemo() {
+      return <Badge label="New" variant="default" />;
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "badge"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/badge.tsx`.**
+        <ComponentSource name="badge" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Badge from '@/components/ui/badge';
+```
+
+```tsx
+<Badge label="New" variant="default" />
+```
+
+## Examples
+
+### All variants
+
+```tsx
+<Badge label="Default" variant="default" />
+<Badge label="Secondary" variant="secondary" />
+<Badge label="Destructive" variant="destructive" />
+<Badge label="Outline" variant="outline" />
+<Badge label="Ghost" variant="ghost" />
+```
+
+### With an icon
+
+```tsx
+import { Feather } from '@expo/vector-icons';
+
+<Badge
+  label="Verified"
+  variant="default"
+  icon={<Feather name="check-circle" size={12} color="white" />}
+/>
+```
+
+### Status indicators
+
+```tsx
+<Badge label="Active" variant="default" />
+<Badge label="Pending" variant="secondary" />
+<Badge label="Failed" variant="destructive" />
+<Badge label="Draft" variant="ghost" />
+```
+
+### With custom styles
+
+```tsx
+<Badge
+  label="Premium"
+  variant="outline"
+  style={{ borderColor: '#f59e0b' }}
+  textStyle={{ color: '#f59e0b' }}
+/>
+```
+
+## API Reference
+
+### Badge
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | **Required.** Text content of the badge. |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost"` | `"default"` | Visual style variant. |
+| `icon` | `ReactNode` | — | Optional icon rendered before the label. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `textStyle` | `TextStyle` | — | Additional label text styles. |
+| `accessibilityLabel` | `string` | `label` | Custom accessibility label. |
+
+## Variant Reference
+
+| Variant | Background | Text | Border |
+|---------|-----------|------|--------|
+| `default` | `primary` | `primaryForeground` | transparent |
+| `secondary` | `secondary` | `secondaryForeground` | transparent |
+| `destructive` | `destructive` | `destructiveForeground` | transparent |
+| `outline` | transparent | `foreground` | `border` |
+| `ghost` | `muted` | `mutedForeground` | transparent |

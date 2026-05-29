@@ -1,0 +1,165 @@
+---
+title: Textarea
+description: A multiline text input with focus ring, error state, and disabled styling. A lightweight alternative to the full Input component for free-form text fields.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { Textarea } from '@/components/ui/textarea';
+    import { useState } from 'react';
+
+    export function TextareaDemo() {
+      const [value, setValue] = useState('');
+
+      return (
+        <Textarea
+          placeholder="Write your message here…"
+          value={value}
+          onChangeText={setValue}
+        />
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "textarea"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/textarea.tsx`:**
+        <ComponentSource name="textarea" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Textarea } from '@/components/ui/textarea';
+```
+
+```tsx
+<Textarea
+  placeholder="Enter your message…"
+  value={message}
+  onChangeText={setMessage}
+/>
+```
+
+## Examples
+
+### Controlled
+
+```tsx
+const [bio, setBio] = useState('');
+
+<Textarea
+  value={bio}
+  onChangeText={setBio}
+  placeholder="Tell us about yourself"
+  style={{ minHeight: 100 }}
+/>
+```
+
+### Error state
+
+```tsx
+<Textarea
+  placeholder="Required"
+  aria-invalid={!!errors.message}
+  value={message}
+  onChangeText={setMessage}
+/>
+{errors.message && (
+  <Text style={{ color: 'red', fontSize: 12 }}>{errors.message}</Text>
+)}
+```
+
+### Read-only
+
+```tsx
+<Textarea
+  value="This content cannot be changed."
+  editable={false}
+/>
+```
+
+### Inside a form field
+
+```tsx
+<Field error={errors.notes}>
+  <FieldLabel>Notes</FieldLabel>
+  <Textarea
+    placeholder="Add any additional notes…"
+    value={notes}
+    onChangeText={setNotes}
+    style={{ minHeight: 80 }}
+    aria-invalid={!!errors.notes}
+  />
+  <FieldError />
+</Field>
+```
+
+### Fixed height
+
+```tsx
+<Textarea
+  placeholder="Short description"
+  style={{ minHeight: 48, maxHeight: 48 }}
+  numberOfLines={2}
+/>
+```
+
+## API Reference
+
+### Textarea
+
+Extends all React Native `TextInputProps`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `aria-invalid` | `boolean` | — | When `true`, renders the border in `colors.destructive`. |
+| `editable` | `boolean` | `true` | When `false`, dims the field and applies a subtle disabled background. |
+| `placeholder` | `string` | — | Placeholder text, styled with `colors.mutedForeground`. |
+| `style` | `TextStyle` | — | Additional styles. Use `minHeight` to control the default size (defaults to `64px`). |
+| `onFocus` | `(e) => void` | — | Called on focus; also switches border to `colors.ring`. |
+| `onBlur` | `(e) => void` | — | Called on blur; border reverts to `colors.border`. |
+
+> `multiline` and `textAlignVertical="top"` are set internally — you do not need to pass them.

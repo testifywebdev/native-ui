@@ -1,0 +1,201 @@
+---
+title: Empty State
+description: A composable empty-state layout with media, title, description, and action slots. Use it to give users clear feedback when a list or page has no content.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      Empty,
+      EmptyHeader,
+      EmptyMedia,
+      EmptyTitle,
+      EmptyDescription,
+      EmptyContent,
+    } from '@/components/ui/empty';
+    import { Feather } from '@expo/vector-icons';
+    import Button from '@/components/ui/button';
+
+    export function EmptyDemo() {
+      return (
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Feather name="inbox" size={28} color="#71717a" />
+            </EmptyMedia>
+            <EmptyTitle>No results found</EmptyTitle>
+            <EmptyDescription>
+              Try adjusting your search or filters to find what you're looking for.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button title="Clear Filters" variant="outline" />
+          </EmptyContent>
+        </Empty>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "empty"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/empty.tsx`.**
+        <ComponentSource name="empty" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from '@/components/ui/empty';
+```
+
+```tsx
+<Empty>
+  <EmptyHeader>
+    <EmptyTitle>No items yet</EmptyTitle>
+    <EmptyDescription>Add your first item to get started.</EmptyDescription>
+  </EmptyHeader>
+</Empty>
+```
+
+## Examples
+
+### Icon variant
+
+```tsx
+<Empty>
+  <EmptyHeader>
+    <EmptyMedia variant="icon">
+      <Feather name="file-text" size={28} color="#71717a" />
+    </EmptyMedia>
+    <EmptyTitle>No documents</EmptyTitle>
+    <EmptyDescription>Upload a document to see it here.</EmptyDescription>
+  </EmptyHeader>
+  <EmptyContent>
+    <Button title="Upload" />
+  </EmptyContent>
+</Empty>
+```
+
+### Image variant
+
+```tsx
+<Empty>
+  <EmptyHeader>
+    <EmptyMedia variant="image">
+      <Image source={require('@/assets/empty.png')} style={{ width: 120, height: 120 }} />
+    </EmptyMedia>
+    <EmptyTitle>Nothing here</EmptyTitle>
+    <EmptyDescription>Come back later.</EmptyDescription>
+  </EmptyHeader>
+</Empty>
+```
+
+### Minimal (title + description only)
+
+```tsx
+<Empty>
+  <EmptyHeader>
+    <EmptyTitle>No notifications</EmptyTitle>
+    <EmptyDescription>You're all caught up!</EmptyDescription>
+  </EmptyHeader>
+</Empty>
+```
+
+## API Reference
+
+### Empty
+
+Root container. Centered, full-flex layout with padding.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### EmptyHeader
+
+Centered column for the media, title, and description.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### EmptyMedia
+
+Container for an illustration or icon. The `"icon"` variant renders a rounded background pill; `"image"` is a plain wrapper.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"icon" \| "image"` | `"icon"` | Visual container style. |
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### EmptyTitle
+
+Large, centered heading text.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### EmptyDescription
+
+Smaller, centered muted description text.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+
+### EmptyContent
+
+Centered action area (e.g., buttons).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |

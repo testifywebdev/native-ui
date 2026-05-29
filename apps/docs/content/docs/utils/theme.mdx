@@ -1,0 +1,194 @@
+---
+title: Theme
+description: The shared theme configuration and provider powering all NativeUI components. Defines colors, spacing, radius, and typography for light, dark, and unspecified color schemes.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+## Overview
+
+All NativeUI components consume a central `THEME` object and `useTheme` hook from `@/lib/theme`. The theme defines four tokens categories:
+
+| Category | Description |
+|----------|-------------|
+| `colors` | Semantic color palette (background, foreground, primary, muted, …) |
+| `spacing` | Consistent spacing scale from `xs` (4) to `3xl` (32) |
+| `radius` | Border-radius scale from `sm` (4) to `full` (9999) |
+| `typography` | Font-size scale from `xs` (11) to `2xl` (24) |
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "lib-theme"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `lib/theme.tsx`.**
+        <ComponentSource name="theme" />
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Setup
+
+Wrap your root layout with `ThemeProvider`:
+
+```tsx title="app/_layout.tsx"
+import { ThemeProvider } from '@/lib/theme';
+
+export default function RootLayout({ children }) {
+  return (
+    <ThemeProvider>
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+## Usage in components
+
+```tsx
+import { THEME, useTheme } from '@/lib/theme';
+
+function MyComponent() {
+  const { theme } = useTheme();
+  const { colors, spacing, radius, typography } = THEME[theme];
+
+  return (
+    <View style={{
+      backgroundColor: colors.card,
+      padding: spacing.lg,
+      borderRadius: radius.lg,
+    }}>
+      <Text style={{ fontSize: typography.base, color: colors.foreground }}>
+        Hello!
+      </Text>
+    </View>
+  );
+}
+```
+
+## Changing the theme
+
+```tsx
+import { useTheme } from '@/lib/theme';
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <Button
+      title={theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
+      onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+    />
+  );
+}
+```
+
+## Token Reference
+
+### Colors
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `background` | `#ffffff` | `#09090b` |
+| `foreground` | `#09090b` | `#fafafa` |
+| `card` | `#ffffff` | `#18181b` |
+| `cardForeground` | `#09090b` | `#fafafa` |
+| `popover` | `#ffffff` | `#18181b` |
+| `popoverForeground` | `#09090b` | `#fafafa` |
+| `primary` | `#18181b` | `#e4e4e7` |
+| `primaryForeground` | `#fafafa` | `#18181b` |
+| `secondary` | `#f4f4f5` | `#27272a` |
+| `secondaryForeground` | `#18181b` | `#fafafa` |
+| `muted` | `#f4f4f5` | `#27272a` |
+| `mutedForeground` | `#71717a` | `#a1a1aa` |
+| `accent` | `#f4f4f5` | `#27272a` |
+| `accentForeground` | `#18181b` | `#fafafa` |
+| `destructive` | `#e7000b` | `#ff6467` |
+| `destructiveForeground` | `#fafafa` | `#fafafa` |
+| `border` | `#e4e4e7` | `rgba(255,255,255,0.1)` |
+| `input` | `#e4e4e7` | `rgba(255,255,255,0.15)` |
+| `ring` | `#a1a1aa` | `#71717a` |
+
+### Spacing
+
+| Token | Value |
+|-------|-------|
+| `xs` | 4 |
+| `sm` | 8 |
+| `md` | 12 |
+| `lg` | 16 |
+| `xl` | 20 |
+| `2xl` | 24 |
+| `3xl` | 32 |
+
+### Radius
+
+| Token | Value |
+|-------|-------|
+| `sm` | 4 |
+| `md` | 8 |
+| `lg` | 12 |
+| `xl` | 16 |
+| `full` | 9999 |
+
+### Typography
+
+| Token | Value |
+|-------|-------|
+| `xs` | 11 |
+| `sm` | 13 |
+| `base` | 15 |
+| `lg` | 17 |
+| `xl` | 20 |
+| `2xl` | 24 |
+
+## API Reference
+
+### THEME
+
+```ts
+const THEME: Record<"light" | "dark" | "unspecified", ThemeConfig>
+```
+
+A static object containing the full theme config for each color scheme. Access it as `THEME[theme]` where `theme` is the current value from `useTheme()`.
+
+### ThemeProvider
+
+```tsx
+<ThemeProvider>
+  {children}
+</ThemeProvider>
+```
+
+Reads the device color scheme via `useColorScheme()` and sets the initial theme. Provides `theme` and `setTheme` via context.
+
+### useTheme
+
+```ts
+const { theme, setTheme } = useTheme();
+```
+
+| Return value | Type | Description |
+|--------------|------|-------------|
+| `theme` | `"light" \| "dark" \| "unspecified"` | Current active theme. |
+| `setTheme` | `Dispatch<SetStateAction<Theme>>` | Update the active theme. |

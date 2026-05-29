@@ -1,0 +1,150 @@
+---
+title: Installation
+description: Get native-ui running in a new or existing Expo project.
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Create project
+
+Run `init` to start a new project, or follow the manual steps to set up an existing one.
+
+<Tabs items={['CLI', 'Manual']} className='bg-transparent border-none'>
+
+<Tab value="CLI" className='bg-transparent border-none' >
+
+<Steps>
+<Step>
+<Tabs items={['npm', 'bun', 'pnpm', 'yarn']}>
+  <Tab value="npm">
+    ```bash
+    npx native-ui@latest init
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx native-ui@latest init
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx native-ui@latest init
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx native-ui@latest init
+    ```
+  </Tab>
+</Tabs>
+
+This creates a `native-ui.json` file in your current directory, installs peer dependencies, and sets up your theme.
+</Step>
+ <Step>
+    ### Add the PortalHost to your root layout
+
+    Render the `PortalHost` from [@rn-primitives/portal](https://rnprimitives.com/portal/) as the
+    last child of your providers so portal-based components can render correctly.
+
+    ```diff title="app/_layout.tsx"
+      <ThemeProvider>
+        <StatusBar />
+        <Stack />
+    +   <PortalHost />
+      </ThemeProvider>
+    ```
+  </Step>
+  </Steps>
+</Tab>
+
+<Tab value="Manual" className='bg-transparent border-none'>
+
+<Steps>
+  <Step>
+    ### Create an Expo project
+    If you don't have one already:
+    ```bash
+    npx create-expo-app@latest my-app
+    cd my-app
+    ```
+  </Step>
+  <Step>
+    ### Create native-ui.json
+    Create this file at your project root:
+    ```json title="native-ui.json"
+    {
+      "$schema": "https://native-ui.dev/schema.json",
+      "typescript": true,
+      "outputDir": "components/ui",
+      "expoRunner": "npx",
+      "baseDependencies": [
+        "react-native-reanimated",
+        "react-native-worklets"
+      ],
+      "components": []
+    }
+    ```
+  </Step>
+  <Step>
+    ### Add the PortalHost to your root layout
+
+    Render the `PortalHost` from [@rn-primitives/portal](https://rnprimitives.com/portal/) as the
+    last child of your providers so portal-based components can render correctly.
+
+    ```diff title="app/_layout.tsx"
+      <ThemeProvider>
+        <StatusBar />
+        <Stack />
+    +   <PortalHost />
+      </ThemeProvider>
+    ```
+  </Step>
+</Steps>
+
+</Tab>
+
+</Tabs>
+
+## Add components
+
+You can now start adding components to your app.
+
+<Tabs items={['npm', 'bun', 'pnpm', 'yarn']}>
+  <Tab value="npm">
+    ```bash
+    npx native-ui@latest add button typography
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bunx native-ui@latest add button typography
+    ```
+  </Tab>
+  <Tab value="pnpm">
+    ```bash
+    pnpm dlx native-ui@latest add button typography
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dlx native-ui@latest add button typography
+    ```
+  </Tab>
+</Tabs>
+
+The command above will add the `Button` and `Typography` components to your project. You can then import them like this:
+
+```tsx title="index.tsx"
+import Button from '@/components/ui/button';
+import Typography from '@/components/ui/typography';
+
+export default function Screen() {
+  return (
+    <>
+      <Typography variant="h3">Get started</Typography>
+      <Button title="Click me" />
+    </>
+  );
+}
+```

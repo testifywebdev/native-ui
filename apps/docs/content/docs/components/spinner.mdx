@@ -1,0 +1,141 @@
+---
+title: Spinner
+description: A rotating loading indicator with configurable size, color, and border thickness. Built with react-native-reanimated for a smooth, continuous spin animation.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Spinner from '@/components/ui/spinner';
+
+    export function SpinnerDemo() {
+      return <Spinner />;
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "spinner"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install react-native-reanimated
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/spinner.tsx`:**
+        <ComponentSource name="spinner" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Spinner from '@/components/ui/spinner';
+```
+
+```tsx
+<Spinner />
+```
+
+## Examples
+
+### All sizes
+
+```tsx
+<Spinner size="sm" />
+<Spinner size="default" />
+<Spinner size="lg" />
+```
+
+### Custom numeric size
+
+```tsx
+<Spinner size={64} />
+```
+
+### Custom color
+
+```tsx
+<Spinner color="#8b5cf6" />
+```
+
+### Custom thickness
+
+```tsx
+<Spinner size="lg" thickness={4} />
+```
+
+### Full-screen loading overlay
+
+```tsx
+<View style={StyleSheet.absoluteFillObject, { justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)' }}>
+  <Spinner size="lg" color="white" />
+</View>
+```
+
+### Inside a button (manual loading state)
+
+```tsx
+<View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+  <Spinner size="sm" color="white" />
+  <Text style={{ color: 'white' }}>Saving…</Text>
+</View>
+```
+
+### Centered in a screen
+
+```tsx
+<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  <Spinner size="lg" accessibilityLabel="Loading your feed" />
+</View>
+```
+
+## API Reference
+
+### Spinner
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `"sm" \| "default" \| "lg" \| number` | `"default"` | Size of the spinner. Named sizes map to theme spacing: `sm` → `spacing.lg` (16px), `default` → `spacing.xl` (20px), `lg` → `spacing.xl * 2` (40px). Pass a number for a custom pixel size. |
+| `color` | `string` | `colors.primary` | Color of the spinning arc. Defaults to the theme primary color. |
+| `thickness` | `number` | `size * 0.1` (min 2) | Border width of the spinner ring. |
+| `accessibilityLabel` | `string` | `"Loading..."` | Screen reader announcement. |
+| `style` | `ViewStyle` | — | Additional styles. |
+
+> The spinner has `accessibilityRole="progressbar"` and `accessibilityState={{ busy: true }}` set automatically.

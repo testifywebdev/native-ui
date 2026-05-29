@@ -1,0 +1,174 @@
+---
+title: Typography
+description: A single, composable Text component covering all type scales — headings, body, lead, captions, blockquotes, and code — with automatic theme colors and accessibility roles.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import Typography from '@/components/ui/typography';
+
+    export function TypographyDemo() {
+      return (
+        <>
+          <Typography variant="h1">Heading 1</Typography>
+          <Typography variant="h2">Heading 2</Typography>
+          <Typography variant="p">
+            The quick brown fox jumps over the lazy dog.
+          </Typography>
+          <Typography variant="muted">A muted caption line.</Typography>
+        </>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "typography"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.**
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/typography.tsx`:**
+        <ComponentSource name="typography" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import Typography from '@/components/ui/typography';
+```
+
+```tsx
+<Typography variant="h2">Section Title</Typography>
+<Typography variant="p">Body paragraph text.</Typography>
+```
+
+## Examples
+
+### Headings
+
+```tsx
+<Typography variant="h1">Page Title</Typography>
+<Typography variant="h2">Section Heading</Typography>
+<Typography variant="h3">Subsection</Typography>
+<Typography variant="h4">Smaller Heading</Typography>
+```
+
+> Heading variants (`h1`–`h4`) automatically receive `accessibilityRole="header"`.
+
+### Body variants
+
+```tsx
+<Typography variant="p">Regular body text with a comfortable line-height.</Typography>
+<Typography variant="lead">A larger introductory paragraph.</Typography>
+<Typography variant="large">Large semi-bold text.</Typography>
+<Typography variant="small">Small medium-weight text.</Typography>
+<Typography variant="muted">Muted secondary text.</Typography>
+<Typography variant="caption">Tiny caption or metadata.</Typography>
+<Typography variant="label">FORM LABEL UPPERCASE</Typography>
+```
+
+### Blockquote
+
+Renders a left-bordered blockquote container around the text:
+
+```tsx
+<Typography variant="blockquote">
+  "Design is not just what it looks like and feels like. Design is how it works."
+</Typography>
+```
+
+### Inline code
+
+Renders with a monospace font inside a muted rounded background:
+
+```tsx
+<Typography variant="code">npm install react-native-reanimated</Typography>
+```
+
+### Custom styles
+
+Override any token via `style`:
+
+```tsx
+<Typography variant="h2" style={{ color: '#8b5cf6', letterSpacing: 1 }}>
+  Purple Heading
+</Typography>
+```
+
+### With containerStyle (blockquote / code only)
+
+```tsx
+<Typography
+  variant="blockquote"
+  containerStyle={{ borderLeftColor: '#8b5cf6', borderLeftWidth: 4 }}
+>
+  Custom bordered quote.
+</Typography>
+```
+
+## API Reference
+
+### Typography
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `TypographyVariant` | `"p"` | The typographic style to apply. See variant table below. |
+| `style` | `TextStyle` | — | Additional text styles merged after the variant styles. |
+| `containerStyle` | `ViewStyle` | — | Styles for the outer View wrapper — only used for `"blockquote"` and `"code"` variants. |
+| `accessibilityRole` | `string` | Auto | Defaults to `"header"` for heading variants; `undefined` otherwise. |
+
+## Variant Reference
+
+| Variant | Font Size | Weight | Color | Notes |
+|---------|-----------|--------|-------|-------|
+| `h1` | `2xl` (24) | 800 | `foreground` | `accessibilityRole="header"` |
+| `h2` | `xl` (20) | 700 | `foreground` | `accessibilityRole="header"` |
+| `h3` | `lg` (17) | 600 | `foreground` | `accessibilityRole="header"` |
+| `h4` | `base` (15) | 600 | `foreground` | `accessibilityRole="header"` |
+| `p` | `base` (15) | 400 | `foreground` | Default |
+| `lead` | `lg` (17) | 400 | `mutedForeground` | Introductory copy |
+| `large` | `lg` (17) | 600 | `foreground` | Emphasized body |
+| `small` | `sm` (13) | 500 | `foreground` | Fine print |
+| `muted` | `sm` (13) | 400 | `mutedForeground` | Secondary text |
+| `blockquote` | `base` (15) | 400 italic | `mutedForeground` | Left-bordered container |
+| `code` | `sm` (13) | 400 mono | `foreground` | Muted pill container |
+| `label` | `xs` (11) | 600 uppercase | `foreground` | Form labels |
+| `caption` | `xs` (11) | 400 | `mutedForeground` | Image/table captions |

@@ -1,0 +1,255 @@
+---
+title: Table
+description: A horizontally scrollable data table built on rn-primitives with themed header, body, footer, rows, and cells. Automatically wraps string/number children in styled Text.
+---
+
+import { CommandTabs } from "@/components/command-tabs";
+import { ExternalLinks } from "@/components/external-links";
+import { PreviewCard } from "@/components/preview-card";
+import { ComponentSource } from "@/components/component-source";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<ExternalLinks
+  links={[
+    { title: 'RN Primitives Docs', url: 'https://rnprimitives.com/table/' },
+    { title: 'RN Primitives API Reference', url: 'https://rnprimitives.com/table/#props' },
+  ]}
+/>
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import {
+      Table,
+      TableHeader,
+      TableBody,
+      TableFooter,
+      TableRow,
+      TableHead,
+      TableCell,
+      TableCaption,
+    } from '@/components/ui/table';
+
+    const invoices = [
+      { id: 'INV001', status: 'Paid', method: 'Credit Card', amount: '$250.00' },
+      { id: 'INV002', status: 'Pending', method: 'PayPal', amount: '$150.00' },
+      { id: 'INV003', status: 'Unpaid', method: 'Bank Transfer', amount: '$350.00' },
+    ];
+
+    export function TableDemo() {
+      return (
+        <Table>
+          <TableCaption>Recent invoices</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Invoice</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Method</TableHead>
+              <TableHead>Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {invoices.map((inv) => (
+              <TableRow key={inv.id}>
+                <TableCell>{inv.id}</TableCell>
+                <TableCell>{inv.status}</TableCell>
+                <TableCell>{inv.method}</TableCell>
+                <TableCell>{inv.amount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell>Total</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell>$750.00</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "table"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **Install the required dependencies:**
+        ```bash
+        npx expo install @rn-primitives/table
+        ```
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/table.tsx`:**
+        <ComponentSource name="table" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from '@/components/ui/table';
+```
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Alice</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+## Examples
+
+### With custom cell content
+
+Pass React elements instead of strings to render anything inside a cell:
+
+```tsx
+import Badge from '@/components/ui/badge';
+
+<TableCell>
+  <Badge label="Active" variant="default" />
+</TableCell>
+```
+
+### Fixed column widths
+
+```tsx
+<TableHead style={{ flex: 2 }}>Name</TableHead>
+<TableHead style={{ flex: 1 }}>Role</TableHead>
+```
+
+### Without footer
+
+```tsx
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Task</TableHead>
+      <TableHead>Due</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {tasks.map((t) => (
+      <TableRow key={t.id}>
+        <TableCell>{t.name}</TableCell>
+        <TableCell>{t.due}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+## API Reference
+
+### Table
+
+Wraps everything in a horizontal `ScrollView` so wide tables scroll naturally.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles for the inner root view. |
+
+### TableHeader
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. Has a bottom border by default. |
+
+### TableBody
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### TableFooter
+
+Renders with a subtle tinted background and a top border.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional styles. |
+
+### TableRow
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle \| (state) => ViewStyle` | — | Additional styles. Supports pressed state. Has a hairline bottom border. |
+
+### TableHead
+
+Column header cell.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional cell container styles. |
+| `textStyle` | `TextStyle` | — | Additional text styles (applied when children is a string/number). |
+| `children` | `string \| number \| ReactNode` | — | String/number children are auto-wrapped in a styled `Text`. |
+
+### TableCell
+
+Data cell.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional cell container styles. |
+| `textStyle` | `TextStyle` | — | Additional text styles (applied when children is a string/number). |
+| `children` | `string \| number \| ReactNode` | — | String/number children are auto-wrapped in a styled `Text`. |
+
+### TableCaption
+
+Centered caption below the table. Maps to a native `Text`.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |

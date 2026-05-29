@@ -1,0 +1,187 @@
+---
+title: Alert
+description: Displays a callout for user attention with support for multiple severity variants including default, destructive, warning, success, and info.
+---
+
+import { CommandTabs } from "@//components/command-tabs";
+import { PreviewCard } from "@//components/preview-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@//components/ui/tabs";
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+<div className="h-5"/>
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="preview">Preview</TabsTrigger>
+    <TabsTrigger value="code">Code</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview">
+    <PreviewCard />
+  </TabsContent>
+  <TabsContent value="code">
+    ```tsx
+    import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+
+    export function AlertDemo() {
+      return (
+        <Alert variant="info">
+          <AlertTitle>Heads up!</AlertTitle>
+          <AlertDescription>
+            You can add components and dependencies to your app using the CLI.
+          </AlertDescription>
+        </Alert>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    <Steps>
+      <Step>
+        <CommandTabs args={["add", "alert"]} />
+      </Step>
+    </Steps>
+  </TabsContent>
+  <TabsContent value="manual">
+    <Steps>
+      <Step>
+        **No external dependencies required.** This component only depends on `@/lib/theme`.
+      </Step>
+      <Step>
+        **Copy and paste the following code into `components/ui/alert.tsx`:**
+        <ComponentSource name="alert" />
+      </Step>
+      <Step>
+        **Update the import paths to match your project setup.**
+      </Step>
+    </Steps>
+  </TabsContent>
+</Tabs>
+
+## Usage
+
+```tsx
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertAction,
+} from '@/components/ui/alert';
+```
+
+```tsx
+<Alert variant="success">
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Your changes have been saved.</AlertDescription>
+</Alert>
+```
+
+## Examples
+
+### With an icon
+
+Pass any icon as the first child — it will be automatically colored and sized to match the variant.
+
+```tsx
+import { Feather } from '@expo/vector-icons';
+
+<Alert variant="warning">
+  <Feather name="alert-triangle" />
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>
+    This action cannot be undone.
+  </AlertDescription>
+</Alert>
+```
+
+### With an action button
+
+```tsx
+import Button from '@/components/ui/button';
+
+<Alert variant="destructive">
+  <AlertTitle>Session expired</AlertTitle>
+  <AlertDescription>Please sign in again to continue.</AlertDescription>
+  <AlertAction>
+    <Button title="Sign in" variant="destructive" />
+  </AlertAction>
+</Alert>
+```
+
+### All variants
+
+```tsx
+<Alert variant="default">
+  <AlertTitle>Default</AlertTitle>
+  <AlertDescription>A neutral informational message.</AlertDescription>
+</Alert>
+
+<Alert variant="destructive">
+  <AlertTitle>Destructive</AlertTitle>
+  <AlertDescription>Something went wrong.</AlertDescription>
+</Alert>
+
+<Alert variant="warning">
+  <AlertTitle>Warning</AlertTitle>
+  <AlertDescription>Proceed with caution.</AlertDescription>
+</Alert>
+
+<Alert variant="success">
+  <AlertTitle>Success</AlertTitle>
+  <AlertDescription>Operation completed.</AlertDescription>
+</Alert>
+
+<Alert variant="info">
+  <AlertTitle>Info</AlertTitle>
+  <AlertDescription>Here is some useful information.</AlertDescription>
+</Alert>
+```
+
+## API Reference
+
+### Alert
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `"default" \| "destructive" \| "warning" \| "success" \| "info"` | `"default"` | Visual style of the alert. |
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `children` | `ReactNode` | — | Alert content. The first child is treated as an icon if it is not `AlertTitle`, `AlertDescription`, or `AlertAction`. |
+
+### AlertTitle
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+| `children` | `string \| ReactNode` | — | Title content. |
+
+### AlertDescription
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `TextStyle` | — | Additional text styles. |
+| `children` | `string \| ReactNode` | — | Description content. |
+
+### AlertAction
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `style` | `ViewStyle` | — | Additional container styles. |
+| `children` | `ReactNode` | — | Action content (e.g., a Button). |
+
+## Variant Color Reference
+
+| Variant | Accent | Light Background | Dark Background |
+|---------|--------|-----------------|-----------------|
+| `default` | `#71717a` | `#fafafa` | `#18181b` |
+| `destructive` | `#dc2626` | `#fff1f1` | `#2a0a0a` |
+| `warning` | `#d97706` | `#fffbeb` | `#1c1500` |
+| `success` | `#16a34a` | `#f0fdf4` | `#071a0e` |
+| `info` | `#2563eb` | `#eff6ff` | `#040d1f` |
