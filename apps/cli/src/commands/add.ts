@@ -19,15 +19,11 @@ import {
   spinner,
   log,
   note,
-} from '@clack/prompts';
-import pc from 'picocolors';
-import path from 'path';
-import { COMPONENTS, entryName } from '../registry.js';
-import {
-  readConfig,
-  markInstalled,
-  configExists,
-} from '../config.js';
+} from "@clack/prompts";
+import pc from "picocolors";
+import path from "path";
+import { COMPONENTS, entryName } from "../registry.js";
+import { readConfig, markInstalled, configExists } from "../config.js";
 import {
   fetchRegistryClosure,
   writeFile,
@@ -36,16 +32,17 @@ import {
   logError,
   logWarn,
   getMissingPackages,
-} from '../utils.js';
+  resolveComponentDest,
+} from "../utils.js";
 
 export async function addCommand(
   componentArgs: string[],
-  opts: { overwrite?: boolean; all?: boolean }
+  opts: { overwrite?: boolean; all?: boolean },
 ) {
-  intro(pc.bgCyan(pc.black('  native-ui  ')) + pc.dim('  add components'));
+  intro(pc.bgCyan(pc.black("  native-ui  ")) + pc.dim("  add components"));
 
   if (!configExists()) {
-    logError('native-ui.json not found. Run `native-ui init` first.');
+    logError("native-ui.json not found. Run `native-ui init` first.");
     process.exit(1);
   }
 
@@ -58,44 +55,44 @@ export async function addCommand(
 
   if (opts.all) {
     selectedKeys = [...COMPONENTS];
-
   } else if (componentArgs.length > 0) {
     selectedKeys = componentArgs.map((c) => c.toLowerCase());
 
     const unknown = selectedKeys.filter(
-      (k) => !(COMPONENTS as readonly string[]).includes(k)
+      (k) => !(COMPONENTS as readonly string[]).includes(k),
     );
     if (unknown.length > 0) {
-      logError(`Unknown component(s): ${unknown.join(', ')}`);
-      log.info(`Run ${pc.bold('native-ui list')} to see all available components.`);
+      logError(`Unknown component(s): ${unknown.join(", ")}`);
+      log.info(
+        `Run ${pc.bold("native-ui list")} to see all available components.`,
+      );
       process.exit(1);
     }
-
   } else {
     // ── Interactive multiselect — list comes from COMPONENTS ───
-    const SELECT_ALL = '__select_all__';
+    const SELECT_ALL = "__select_all__";
 
     const options = [
-      { value: SELECT_ALL, label: pc.bold('Select all') },
+      { value: SELECT_ALL, label: pc.bold("Select all") },
       ...[...COMPONENTS].sort().map((key) => {
         const isInstalled = installedKeys.includes(key);
         return {
           value: key,
           label:
             pc.bold(key.padEnd(28)) +
-            (isInstalled ? pc.green('installed') : ''),
+            (isInstalled ? pc.green("installed") : ""),
         };
       }),
     ];
 
     const selected = await multiselect({
-      message: 'Pick the components to add:',
+      message: "Pick the components to add:",
       options,
       required: true,
     });
 
-    if (typeof selected === 'symbol') {
-      log.info('Cancelled.');
+    if (typeof selected === "symbol") {
+      log.info("Cancelled.");
       process.exit(0);
     }
 
@@ -105,34 +102,36 @@ export async function addCommand(
 
   // ── Overwrite check ──────────────────────────────────────────
 
-  const alreadyInstalled = selectedKeys.filter((k) => installedKeys.includes(k));
+  const alreadyInstalled = selectedKeys.filter((k) =>
+    installedKeys.includes(k),
+  );
   if (alreadyInstalled.length > 0 && !opts.overwrite) {
-    logWarn(`Already installed: ${alreadyInstalled.join(', ')}`);
+    logWarn(`Already installed: ${alreadyInstalled.join(", ")}`);
     const overwrite = await confirm({
-      message: 'Overwrite existing files?',
+      message: "Overwrite existing files?",
       initialValue: false,
     });
-    if (typeof overwrite === 'symbol' || !overwrite) {
+    if (typeof overwrite === "symbol" || !overwrite) {
       selectedKeys = selectedKeys.filter((k) => !alreadyInstalled.includes(k));
     }
   }
 
   if (selectedKeys.length === 0) {
-    log.info('Nothing to install.');
+    log.info("Nothing to install.");
     process.exit(0);
   }
 
   // ── Fetch file contents + resolve transitive deps ────────────
 
   const fetchSpin = spinner();
-  fetchSpin.start('Fetching components from registry…');
+  fetchSpin.start("Fetching components from registry…");
 
   let closureEntries: Awaited<ReturnType<typeof fetchRegistryClosure>>;
   try {
     closureEntries = await fetchRegistryClosure(selectedKeys);
-    fetchSpin.stop('');
+    fetchSpin.stop("");
   } catch (err) {
-    fetchSpin.stop(pc.red('Fetch failed.'));
+    fetchSpin.stop(pc.red("Fetch failed."));
     logError((err as Error).message);
     process.exit(1);
   }
@@ -144,8 +143,10 @@ export async function addCommand(
   const addedDeps = resolvedKeys.filter((k) => !selectedKeys.includes(k));
   if (addedDeps.length > 0) {
     note(
-      addedDeps.map((k) => `  ${pc.dim('+')} ${entryName(entryMap.get(k)!)}`).join('\n'),
-      'Also adding required dependencies'
+      addedDeps
+        .map((k) => `  ${pc.dim("+")} ${entryName(entryMap.get(k)!)}`)
+        .join("\n"),
+      "Also adding required dependencies",
     );
   }
 
@@ -160,17 +161,22 @@ export async function addCommand(
     const file = entry.files?.[0];
     const content = file?.content;
 
-    if (typeof content !== 'string') {
-      results.push({ key, dest: '', ok: false, err: 'No file content in registry response.' });
+    if (typeof content !== "string") {
+      results.push({
+        key,
+        dest: "",
+        ok: false,
+        err: "No file content in registry response.",
+      });
       continue;
     }
 
-    const dest = path.resolve(process.cwd(), file?.target ?? file?.path ?? key);
+    const dest = resolveComponentDest(file, config, key);
 
     try {
       writeFile(dest, content);
       (entry.dependencies ?? []).forEach((d) => allNpmDeps.add(d));
-      markInstalled(key);  // ← writes key into native-ui.json `components[]`
+      markInstalled(key); // ← writes key into native-ui.json `components[]`
       results.push({ key, dest, ok: true });
     } catch (err) {
       results.push({ key, dest, ok: false, err: String(err) });
@@ -188,33 +194,35 @@ export async function addCommand(
     }
   }
 
- // ── Install npm deps ──────────────────────────────────────────
+  // ── Install npm deps ──────────────────────────────────────────
 
   if (allNpmDeps.size > 0) {
     const depList = [...allNpmDeps];
-    
+
     // Filter out packages already present in package.json
     const missingDeps = getMissingPackages(depList, process.cwd());
 
     if (missingDeps.length === 0) {
-      log.success(pc.green('All required dependencies are already installed.'));
+      log.success(pc.green("All required dependencies are already installed."));
     } else {
       const ds = spinner();
-      ds.start(`Installing ${missingDeps.join(', ')}…`);
-      
+      ds.start(`Installing ${missingDeps.join(", ")}…`);
+
       const ok = await installPackages(
         missingDeps,
         config.expoRunner,
         process.cwd(),
         (pkg, i, total) =>
-          log.message(pc.dim(`Installing ${pkg} (${i + 1}/${total})…`))
+          log.message(pc.dim(`Installing ${pkg} (${i + 1}/${total})…`)),
       );
-      
+
       if (ok) {
-        ds.stop(pc.green(`Installed ${missingDeps.join(', ')}`));
+        ds.stop(pc.green(`Installed ${missingDeps.join(", ")}`));
       } else {
-        ds.stop(pc.yellow('Dependency install failed. Run manually:'));
-        log.message(pc.dim(`  ${buildInstallCmd(config.expoRunner, missingDeps)}`));
+        ds.stop(pc.yellow("Dependency install failed. Run manually:"));
+        log.message(
+          pc.dim(`  ${buildInstallCmd(config.expoRunner, missingDeps)}`),
+        );
       }
     }
   }
@@ -223,6 +231,6 @@ export async function addCommand(
   outro(
     failed.length === 0
       ? pc.cyan(`${results.length} component(s) added successfully.`)
-      : pc.yellow(`Done with ${failed.length} error(s).`)
+      : pc.yellow(`Done with ${failed.length} error(s).`),
   );
 }
