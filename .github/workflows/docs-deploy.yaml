@@ -38,6 +38,7 @@ jobs:
 
       - name: Build and Deploy Docs to Netlify
         run: |
+          cd apps/docs
           pnpm --package=netlify-cli@latest dlx netlify deploy \
             --prod \
             --build \
