@@ -17,10 +17,10 @@
 // }
 // ─────────────────────────────────────────────────────────────
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-export const CONFIG_FILE = 'native-ui.json';
+export const CONFIG_FILE = "native-ui.json";
 
 export interface NativeConfig {
   $schema: string;
@@ -28,7 +28,7 @@ export interface NativeConfig {
   /** Relative path from project root where components are written */
   outputDir: string;
   /** Which Expo runner to use when installing npm packages */
-  expoRunner: 'npx' | 'yarn' | 'bunx'| 'pnpm';
+  expoRunner: "npx" | "yarn" | "bunx" | "pnpm";
   /** Base peer deps installed during `init` */
   baseDependencies: string[];
   /** Keys of components the user has added to this project */
@@ -36,16 +36,16 @@ export interface NativeConfig {
 }
 
 export const DEFAULT_BASE_DEPENDENCIES = [
-  'react-native-reanimated',
-  'react-native-worklets',
-  '@rn-primitives/portal',
+  "react-native-reanimated",
+  "react-native-worklets",
+  "@rn-primitives/portal",
 ];
 
 export const DEFAULT_CONFIG: NativeConfig = {
-  $schema: 'https://native-ui.dev/schema.json',
+  $schema: "https://nativeui.qzz.io/schema.json",
   typescript: true,
-  outputDir: 'components/ui',
-  expoRunner: 'npx',
+  outputDir: "components/ui",
+  expoRunner: "npx",
   baseDependencies: [...DEFAULT_BASE_DEPENDENCIES],
   components: [],
 };
@@ -65,28 +65,34 @@ export function configExists(): boolean {
 export function readConfig(): NativeConfig {
   const configPath = getConfigPath();
   if (!fs.existsSync(configPath)) {
-    throw new Error('native-ui.json not found. Run `native-ui init` first.');
+    throw new Error("native-ui.json not found. Run `nativeui-cli init` first.");
   }
 
-  const raw = JSON.parse(fs.readFileSync(configPath, 'utf-8')) as Record<string, unknown>;
+  const raw = JSON.parse(fs.readFileSync(configPath, "utf-8")) as Record<
+    string,
+    unknown
+  >;
 
   // Migrate legacy `packageManager` → `expoRunner`
-  const expoRunner: NativeConfig['expoRunner'] =
-    (raw.expoRunner as NativeConfig['expoRunner']) ??
-    (raw.packageManager === 'bun' ? 'bunx'
-      : raw.packageManager === 'yarn' ? 'yarn'
-      : raw.packageManager === 'pnpm' ? 'pnpm'
-      : 'npx');
-
-  // Migrate components from old `.native-ui-state.json` if it still exists
+  const expoRunner: NativeConfig["expoRunner"] =
+    (raw.expoRunner as NativeConfig["expoRunner"]) ??
+    (raw.packageManager === "bun"
+      ? "bunx"
+      : raw.packageManager === "yarn"
+        ? "yarn"
+        : raw.packageManager === "pnpm"
+          ? "pnpm"
+          : "npx");
   let components: string[] = Array.isArray(raw.components)
     ? (raw.components as string[]).map((k) => k.toLowerCase())
     : [];
 
-  const statePath = path.join(process.cwd(), '.native-ui-state.json');
+  const statePath = path.join(process.cwd(), ".native-ui-state.json");
   if (fs.existsSync(statePath)) {
     try {
-      const stateRaw = JSON.parse(fs.readFileSync(statePath, 'utf-8')) as Record<string, unknown>;
+      const stateRaw = JSON.parse(
+        fs.readFileSync(statePath, "utf-8"),
+      ) as Record<string, unknown>;
       const stateComponents = Array.isArray(stateRaw.components)
         ? (stateRaw.components as string[]).map((k) => k.toLowerCase())
         : [];
@@ -99,20 +105,27 @@ export function readConfig(): NativeConfig {
 
   return {
     $schema: (raw.$schema as string) ?? DEFAULT_CONFIG.$schema,
-    typescript: typeof raw.typescript === 'boolean' ? raw.typescript : true,
-    outputDir: typeof raw.outputDir === 'string' && raw.outputDir.trim()
-      ? raw.outputDir.trim()
-      : DEFAULT_CONFIG.outputDir,
+    typescript: typeof raw.typescript === "boolean" ? raw.typescript : true,
+    outputDir:
+      typeof raw.outputDir === "string" && raw.outputDir.trim()
+        ? raw.outputDir.trim()
+        : DEFAULT_CONFIG.outputDir,
     expoRunner,
-    baseDependencies: Array.isArray(raw.baseDependencies) && (raw.baseDependencies as string[]).length > 0
-      ? (raw.baseDependencies as string[])
-      : [...DEFAULT_BASE_DEPENDENCIES],
+    baseDependencies:
+      Array.isArray(raw.baseDependencies) &&
+      (raw.baseDependencies as string[]).length > 0
+        ? (raw.baseDependencies as string[])
+        : [...DEFAULT_BASE_DEPENDENCIES],
     components,
   };
 }
 
 export function writeConfig(config: NativeConfig): void {
-  fs.writeFileSync(getConfigPath(), JSON.stringify(config, null, 2) + '\n', 'utf-8');
+  fs.writeFileSync(
+    getConfigPath(),
+    JSON.stringify(config, null, 2) + "\n",
+    "utf-8",
+  );
 }
 
 export function updateConfig(partial: Partial<NativeConfig>): NativeConfig {

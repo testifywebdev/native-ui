@@ -1,6 +1,6 @@
 {
-  "name": "native-ui",
-  "version": "1.0.0",
+  "name": "nativeui-cli",
+  "version": "1.0.0-beta.0",
   "description": "Add beautiful components to your Expo app.",
   "keywords": [
     "expo",
@@ -9,12 +9,20 @@
     "components",
     "cli"
   ],
-  "author": "Your Name",
+  "author": "Kishan Agarwal",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "native-ui": "./dist/index.js"
+    "nativeui-cli": "dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kishan-Agarwal-28/native-ui.git",
+    "directory": "apps/cli"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
@@ -34,5 +42,15 @@
     "@types/node": "^20.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/Kishan-Agarwal-28/native-ui/tree/main/apps/cli#readme",
+  "bugs": {
+    "url": "https://github.com/Kishan-Agarwal-28/native-ui/issues"
   }
 }

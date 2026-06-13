@@ -1,12 +1,9 @@
 {
-  "$schema": "https://native-ui.dev/schema.json",
+  "$schema": "https://nativeui.qzz.io/schema.json",
   "typescript": true,
   "outputDir": "components/ui",
   "expoRunner": "pnpm",
-  "baseDependencies": [
-    "react-native-reanimated",
-    "react-native-worklets"
-  ],
+  "baseDependencies": ["react-native-reanimated", "react-native-worklets"],
   "components": [
     "accordion",
     "alert",

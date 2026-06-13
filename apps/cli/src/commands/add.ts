@@ -42,7 +42,7 @@ export async function addCommand(
   intro(pc.bgCyan(pc.black("  native-ui  ")) + pc.dim("  add components"));
 
   if (!configExists()) {
-    logError("native-ui.json not found. Run `native-ui init` first.");
+    logError("native-ui.json not found. Run `nativeui-cli init` first.");
     process.exit(1);
   }
 
@@ -64,7 +64,7 @@ export async function addCommand(
     if (unknown.length > 0) {
       logError(`Unknown component(s): ${unknown.join(", ")}`);
       log.info(
-        `Run ${pc.bold("native-ui list")} to see all available components.`,
+        `Run ${pc.bold("nativeui-cli list")} to see all available components.`,
       );
       process.exit(1);
     }

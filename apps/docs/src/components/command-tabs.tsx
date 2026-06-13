@@ -1,13 +1,13 @@
-import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-const MANAGERS = ['npm', 'bun', 'pnpm', 'yarn'] as const;
+const MANAGERS = ["npm", "bun", "pnpm", "yarn"] as const;
 
 const COMMAND: Record<(typeof MANAGERS)[number], string[]> = {
-  npm: ['npx'],
-  bun: ['bunx', '--bun'],
-  pnpm: ['pnpm', 'dlx'],
-  yarn: ['npx'],
+  npm: ["npx"],
+  bun: ["bunx", "--bun"],
+  pnpm: ["pnpm", "dlx"],
+  yarn: ["npx"],
 };
 
 export function CommandTabs({ args }: { args: string[] }) {
@@ -18,7 +18,9 @@ export function CommandTabs({ args }: { args: string[] }) {
           <CodeBlock>
             <Pre>
               <code className="pl-4">
-                {[...COMMAND[manager], 'native-ui@latest', ...args].join(' ')}
+                {[...COMMAND[manager], "nativeui-cli@latest", ...args].join(
+                  " ",
+                )}
               </code>
             </Pre>
           </CodeBlock>

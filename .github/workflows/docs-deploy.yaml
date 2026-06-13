@@ -1,0 +1,48 @@
+name: Deploy native-ui docs
+
+on:
+  push:
+    branches:
+      - prod:docs
+      - prod:all
+
+concurrency:
+  group: netlify-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DOCS_SITE_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and Deploy Docs to Netlify
+        run: |
+          pnpm --package=netlify-cli@latest dlx netlify deploy \
+            --prod \
+            --build \
+            --cwd=apps/docs \
+            --site "$NETLIFY_SITE_ID" \
+            --auth "$NETLIFY_AUTH_TOKEN" \
+            --message "Docs deployed via GitHub Actions"

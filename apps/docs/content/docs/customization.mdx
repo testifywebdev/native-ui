@@ -168,12 +168,12 @@ const { setTheme } = useTheme();
 
 ## Customising a single component
 
-Because every component is a local file, you can edit it directly without worrying about upstream updates overwriting your changes (unless you run `native-ui add --overwrite`).
+Because every component is a local file, you can edit it directly without worrying about upstream updates overwriting your changes (unless you run `nativeui-cli add --overwrite`).
 
-Use `native-ui diff` to see what's changed in the registry before deciding whether to update.
+Use `nativeui-cli diff` to see what's changed in the registry before deciding whether to update.
 
 ```bash
-native-ui diff accordion
+nativeui-cli diff accordion
 ```
 
 ---
@@ -184,7 +184,7 @@ This file sits at your project root and controls CLI behaviour. You can edit it 
 
 ```json title="native-ui.json"
 {
-  "$schema": "https://native-ui.dev/schema.json",
+  "$schema": "https://nativeui.qzz.io/schema.json",
   "typescript": true,
   "outputDir": "components/ui",
   "expoRunner": "npx",

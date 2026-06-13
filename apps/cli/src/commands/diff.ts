@@ -27,7 +27,7 @@ export async function diffCommand(componentArg?: string) {
   intro(pc.bgCyan(pc.black("  native-ui  ")) + pc.dim("  diff"));
 
   if (!configExists()) {
-    logError("native-ui.json not found. Run `native-ui init` first.");
+    logError("native-ui.json not found. Run `nativeui-cli init` first.");
     process.exit(1);
   }
 
@@ -41,13 +41,13 @@ export async function diffCommand(componentArg?: string) {
     const key = componentArg.toLowerCase();
     if (!(COMPONENTS as readonly string[]).includes(key)) {
       logError(
-        `Unknown component: ${componentArg}. Run \`native-ui list\` to see available components.`,
+        `Unknown component: ${componentArg}. Run \`nativeui-cli list\` to see available components.`,
       );
       process.exit(1);
     }
     if (!config.components.includes(key)) {
       logError(
-        `${componentArg} is not installed. Run \`native-ui add ${key}\` first.`,
+        `${componentArg} is not installed. Run \`nativeui-cli add ${key}\` first.`,
       );
       process.exit(1);
     }
@@ -55,7 +55,7 @@ export async function diffCommand(componentArg?: string) {
   } else {
     keysToCheck = config.components; // everything in native-ui.json
     if (keysToCheck.length === 0) {
-      log.info("No components installed yet. Run `native-ui add` first.");
+      log.info("No components installed yet. Run `nativeui-cli add` first.");
       process.exit(0);
     }
   }
@@ -134,7 +134,9 @@ export async function diffCommand(componentArg?: string) {
     const name = entryName(entryMap.get(r.key) ?? { key: r.key });
     if (r.status === "upToDate") logSuccess(`${name} — up to date`);
     if (r.status === "missing")
-      logWarn(`${name} — local file missing. Re-add: native-ui add ${r.key}`);
+      logWarn(
+        `${name} — local file missing. Re-add: nativeui-cli add ${r.key}`,
+      );
     if (r.status === "error")
       logError(
         `${name} — ${(r as { key: string; status: "error"; err: string }).err}`,

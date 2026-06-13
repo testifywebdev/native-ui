@@ -28,7 +28,7 @@ export async function removeCommand(componentArgs: string[]) {
 
   // ── Config guard ────────────────────────────────────────────
   if (!configExists()) {
-    logError("No native-ui.json found. Run `native-ui init` first.");
+    logError("No native-ui.json found. Run `nativeui-cli init` first.");
     process.exit(1);
   }
 

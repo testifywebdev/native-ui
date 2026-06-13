@@ -1,11 +1,11 @@
 ---
 title: CLI
-description: Reference for every native-ui command.
+description: Reference for every nativeui-cli command.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-The `native-ui` CLI handles the full lifecycle of your components: initialising a project, adding and removing components, inspecting what's installed, and diffing local files against the registry.
+The `nativeui-cli` CLI handles the full lifecycle of your components: initialising a project, adding and removing components, inspecting what's installed, and diffing local files against the registry.
 
 All commands require a `native-ui.json` at the project root, except `init` which creates it.
 
@@ -16,7 +16,7 @@ All commands require a `native-ui.json` at the project root, except `init` which
 Sets up native-ui in your project. Writes `native-ui.json`, installs base dependencies, and scaffolds the shared `lib/theme.ts` and `lib/use-styles.ts` files.
 
 ```bash
-native-ui init
+nativeui-cli init
 ```
 
 **Options**
@@ -56,23 +56,23 @@ The runner (`npx`, `pnpm`, `yarn`, `bunx`) is auto-detected from your lockfile. 
 Fetches one or more components from the registry and writes them into your output directory.
 
 ```bash
-native-ui add [components...]
+nativeui-cli add [components...]
 ```
 
 **Examples**
 
 ```bash
 # Add a single component
-native-ui add button
+nativeui-cli add button
 
 # Add several at once
-native-ui add button input card
+nativeui-cli add button input card
 
 # Interactive picker — choose from the full list
-native-ui add
+nativeui-cli add
 
 # Add everything
-native-ui add --all
+nativeui-cli add --all
 ```
 
 **Options**
@@ -105,7 +105,7 @@ sonner         spinner        switch         table
 textarea       typography
 ```
 
-Run `native-ui list` to see what's installed in your current project.
+Run `nativeui-cli list` to see what's installed in your current project.
 
 ---
 
@@ -114,18 +114,18 @@ Run `native-ui list` to see what's installed in your current project.
 Deletes local component files and removes them from `native-ui.json`.
 
 ```bash
-native-ui remove [components...]
-# alias: native-ui rm
+nativeui-cli remove [components...]
+# alias: nativeui-cli rm
 ```
 
 **Examples**
 
 ```bash
 # Remove a specific component
-native-ui remove skeleton
+nativeui-cli remove skeleton
 
 # Interactive picker — choose from installed components
-native-ui remove
+nativeui-cli remove
 ```
 
 You'll be asked to confirm before any file is deleted. npm dependencies are never uninstalled automatically — remove them manually if you no longer need them.
@@ -137,8 +137,8 @@ You'll be asked to confirm before any file is deleted. npm dependencies are neve
 Shows all available components and marks which ones are installed in your project.
 
 ```bash
-native-ui list
-# alias: native-ui ls
+nativeui-cli list
+# alias: nativeui-cli ls
 ```
 
 **Options**
@@ -150,7 +150,7 @@ native-ui list
 **Example output**
 
 ```
-  native-ui   available components
+  nativeui-cli   available components
 
   total 30   installed 4   available 26
 
@@ -170,17 +170,17 @@ No network request is made — the list is resolved from the static registry in 
 Compares your local component files against the current registry versions and highlights what's changed.
 
 ```bash
-native-ui diff [component]
+nativeui-cli diff [component]
 ```
 
 **Examples**
 
 ```bash
 # Diff all installed components
-native-ui diff
+nativeui-cli diff
 
 # Diff a single component
-native-ui diff accordion
+nativeui-cli diff accordion
 ```
 
 **What it does**
@@ -196,7 +196,7 @@ After showing the diff, you're offered a choice:
 ✔ What would you like to do? › Update all 2 component(s)
 ```
 
-Choosing to update runs `native-ui add --overwrite` for the changed components. Choosing to skip leaves your files untouched.
+Choosing to update runs `nativeui-cli add --overwrite` for the changed components. Choosing to skip leaves your files untouched.
 
 <Callout type="warn">
 `diff` only checks components listed in `native-ui.json`. If you've moved or renamed a file outside the CLI, it will show up as missing rather than changed.
